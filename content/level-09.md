@@ -25,6 +25,13 @@ $$\operatorname{Var}(X) = \mathbb{E}\bigl((X - \mathbb{E}(X))^2\bigr).$$
 
 Centred moments are considered undefined if $\mathbb{E}(X) \notin \mathbb{R}$ (i.e., if the expectation is $+\infty$, $-\infty$, or does not exist). Notice that the variance is always non-negative, since it is the expectation of a non-negative random variable. The standard computational shortcut $\operatorname{Var}(X) = \mathbb{E}(X^2) - (\mathbb{E}(X))^2$ follows from linearity of expectation (which we will establish shortly).
 
+<details>
+<summary>Formal Statement (Definition 18)</summary>
+
+**Definition 18 (Expectation, moments, variance).** Let $X : \Omega \to \mathbb{R}^{\pm\infty}$ be a random variable on $(\Omega, \mathcal{F}, \mathbb{P})$. The expectation is $\mathbb{E}(X) = \int_\Omega X \, \mathrm{d}\mathbb{P}$. The $s$-th moment is $\mathbb{E}(X^s)$. The variance is $\operatorname{Var}(X) = \mathbb{E}((X - \mathbb{E}(X))^2)$.
+
+</details>
+
 ### Markov's and Chebyshev's inequalities
 
 These two inequalities convert information about moments into information about tail probabilities. They are blunt instruments -- the bounds are often far from tight -- but they are universally applicable.
@@ -35,11 +42,29 @@ $$\mathbb{P}(X \geq t) \leq \frac{\mathbb{E}(X)}{t}.$$
 
 The intuition is immediate: if a non-negative random variable has small expectation, it cannot be large with high probability. The proof is a one-liner using indicators. Let $A = \{\omega : X(\omega) \geq t\}$. Then $X \geq t \cdot \mathbf{1}_A$ pointwise, so integrating both sides gives $\mathbb{E}(X) \geq t \, \mathbb{P}(A)$, and rearranging yields the result. This is Exercise 14 below.
 
+<details>
+<summary>Formal Statement & Proof (Theorem 19 — Markov's Inequality)</summary>
+
+**Theorem 19 (Markov's Inequality).** Let $X \geq 0$ with $\mathbb{E}(X) < \infty$. For any $t > 0$: $\mathbb{P}(X \geq t) \leq \frac{\mathbb{E}(X)}{t}$.
+
+**Proof.** Let $A = \{\omega : X(\omega) \geq t\}$. Then $X \geq t \cdot \mathbf{1}_A$ pointwise (on $A$, $X \geq t$; off $A$, $t \cdot \mathbf{1}_A = 0 \leq X$). Integrating: $\mathbb{E}(X) \geq t \, \mathbb{P}(A) = t \, \mathbb{P}(X \geq t)$. Divide by $t$. $\square$
+
+</details>
+
 **Chebyshev's inequality** applies Markov to the centred square $(X - \mathbb{E}(X))^2$:
 
 $$\mathbb{P}\bigl(|X - \mathbb{E}(X)| \geq t\bigr) \leq \frac{\operatorname{Var}(X)}{t^2}.$$
 
 The proof is short and instructive. The event $\{|X - \mathbb{E}(X)| \geq t\}$ is the same as $\{(X - \mathbb{E}(X))^2 \geq t^2\}$. The random variable $(X - \mathbb{E}(X))^2$ is non-negative with expectation $\operatorname{Var}(X) < \infty$, so Markov's inequality gives $\mathbb{P}((X - \mathbb{E}(X))^2 \geq t^2) \leq \operatorname{Var}(X)/t^2$.
+
+<details>
+<summary>Formal Statement & Proof (Theorem 20 — Chebyshev's Inequality)</summary>
+
+**Theorem 20 (Chebyshev's Inequality).** Let $X$ be a random variable with $\operatorname{Var}(X) < \infty$. For any $t > 0$: $\mathbb{P}(|X - \mathbb{E}(X)| \geq t) \leq \frac{\operatorname{Var}(X)}{t^2}$.
+
+**Proof.** The event $\{|X - \mathbb{E}(X)| \geq t\}$ equals $\{(X - \mathbb{E}(X))^2 \geq t^2\}$. Apply Markov's inequality to the non-negative random variable $(X - \mathbb{E}(X))^2$ with threshold $t^2$: $\mathbb{P}((X - \mathbb{E}(X))^2 \geq t^2) \leq \frac{\mathbb{E}((X - \mathbb{E}(X))^2)}{t^2} = \frac{\operatorname{Var}(X)}{t^2}$. $\square$
+
+</details>
 
 Control of the expectation (first moment) tells us $X$ is unlikely to be *big*. Control of the variance (second centred moment) tells us $X$ is unlikely to be *far from its mean*. The same idea extends to higher moments: applying Markov to $|X - \mathbb{E}(X)|^k$ with threshold $t^k$ gives $\mathbb{P}(|X - \mathbb{E}(X)| \geq t) \leq \mathbb{E}(|X - \mathbb{E}(X)|^k)/t^k$, though one must be careful with odd moments because of cancellation.
 
@@ -54,6 +79,13 @@ $$\mathbb{P}(G_1 \cap \cdots \cap G_n) = \mathbb{P}(G_1) \cdots \mathbb{P}(G_n).
 Random variables $X_1, \ldots, X_n$ are **independent** if their generated $\sigma$-algebras $\sigma(X_1), \ldots, \sigma(X_n)$ are independent.
 
 An *infinite* collection of $\sigma$-algebras (or random variables) is independent if every finite sub-collection is independent.
+
+<details>
+<summary>Formal Statement (Definition 21)</summary>
+
+**Definition 21 (Independence).** $\sigma$-algebras $\mathcal{G}_1, \ldots, \mathcal{G}_n \subseteq \mathcal{F}$ are independent if for any $G_i \in \mathcal{G}_i$: $\mathbb{P}(G_1 \cap \cdots \cap G_n) = \prod_{i=1}^n \mathbb{P}(G_i)$. Random variables $X_1, \ldots, X_n$ are independent if $\sigma(X_1), \ldots, \sigma(X_n)$ are independent. An infinite collection is independent if every finite sub-collection is.
+
+</details>
 
 It is important to note that **independence is a property of the probability measure $\mathbb{P}$**, not just of the $\sigma$-algebras themselves. The same pair of events can be independent under one measure and dependent under another. To see why, consider a sample space $\Omega = \{a, b, c, d\}$ with $\mathcal{F} = 2^\Omega$, and events $A = \{a, b\}$, $B = \{a, c\}$. Under the uniform measure, $\mathbb{P}(A \cap B) = 1/4 = \mathbb{P}(A)\mathbb{P}(B)$, so $A$ and $B$ are independent. But under the measure $\mathbb{P}(\{a\}) = 1/2$, $\mathbb{P}(\{b\}) = \mathbb{P}(\{c\}) = \mathbb{P}(\{d\}) = 1/6$, we get $\mathbb{P}(A) = 2/3$, $\mathbb{P}(B) = 2/3$, $\mathbb{P}(A \cap B) = 1/2 \neq 4/9$, so $A$ and $B$ are dependent.
 
@@ -79,6 +111,26 @@ This does *not* follow from linearity -- it is a genuinely new property that dep
 
 3. **General case.** Write $X = X^+ - X^-$, $Y = Y^+ - Y^-$. The non-negative case first establishes $\mathbb{E}(|X||Y|) = \mathbb{E}(|X|)\mathbb{E}(|Y|) < \infty$, so $XY$ is integrable. Then approximate $X$ by simple functions $f_n$ with $|f_n| \leq |X|$ and use the DCT (with dominator $|X||Y|$) to conclude.
 
+<details>
+<summary>Formal Statement & Proof (Theorem 22 — Properties of Expectation)</summary>
+
+**Theorem 22.** Let $X, Y$ be random variables with $\mathbb{E}(|X|), \mathbb{E}(|Y|) < \infty$. Then:
+- **Linearity:** $\mathbb{E}(\alpha X + \beta Y) = \alpha \mathbb{E}(X) + \beta \mathbb{E}(Y)$ for any $\alpha, \beta \in \mathbb{R}$.
+- **Multiplicativity (if independent):** If $X, Y$ are independent, $\mathbb{E}(XY) = \mathbb{E}(X)\mathbb{E}(Y)$.
+
+**Proof.**
+
+*Linearity* follows directly from linearity of the Lebesgue integral.
+
+*Multiplicativity:*
+1. **Step 1 — Non-negative simple case.** Let $f = \sum_i \alpha_i \mathbf{1}_{A_i}$ and $g = \sum_j \beta_j \mathbf{1}_{B_j}$ be $\sigma(X)$- and $\sigma(Y)$-measurable simple functions. Then $fg = \sum_{i,j} \alpha_i \beta_j \mathbf{1}_{A_i \cap B_j}$. By independence, $\mathbb{P}(A_i \cap B_j) = \mathbb{P}(A_i)\mathbb{P}(B_j)$, so $\mathbb{E}(fg) = \sum_{i,j} \alpha_i \beta_j \mathbb{P}(A_i)\mathbb{P}(B_j) = \mathbb{E}(f)\mathbb{E}(g)$.
+2. **Step 2 — Non-negative case.** Let $f_n \nearrow X$, $g_n \nearrow Y$ be simple approximations. Then $f_n g_n \nearrow XY$, and MCT gives $\mathbb{E}(XY) = \lim \mathbb{E}(f_n g_n) = \lim \mathbb{E}(f_n)\mathbb{E}(g_n) = \mathbb{E}(X)\mathbb{E}(Y)$.
+3. **Step 3 — General case.** First, $\mathbb{E}(|X||Y|) = \mathbb{E}(|X|)\mathbb{E}(|Y|) < \infty$ (non-negative case), so $XY$ is integrable. Approximate $X$ by simple $f_n$ with $|f_n| \leq |X|$. Then $|f_n Y| \leq |X||Y|$ is integrable, so DCT gives $\mathbb{E}(XY) = \lim \mathbb{E}(f_n Y) = \lim \mathbb{E}(f_n)\mathbb{E}(Y) = \mathbb{E}(X)\mathbb{E}(Y)$.
+
+$\square$
+
+</details>
+
 ### Jensen's inequality
 
 Let $f$ be a convex function on an interval $I$, and let $X$ be a random variable taking values in $I$ with $\mathbb{E}(|X|) < \infty$. Then:
@@ -101,6 +153,15 @@ The proof uses the geometric characterization of convexity. For any $x \in [a, b
 
 Jensen gives many classical inequalities as special cases: taking $f(x) = x^2$ yields $\mathbb{E}(X^2) \geq (\mathbb{E}(X))^2$ (i.e., variance is non-negative); taking $f(x) = -\log x$ yields the AM-GM inequality; taking $f(x) = |x|^p$ for $p \geq 1$ yields $(\mathbb{E}|X|)^p \leq \mathbb{E}(|X|^p)$.
 
+<details>
+<summary>Formal Statement & Proof (Theorem 23 — Jensen's Inequality)</summary>
+
+**Theorem 23 (Jensen's Inequality).** Let $X$ be a real-valued random variable with $\mathbb{E}(|X|) < \infty$, and let $f$ be convex on an interval containing the range of $X$. Then $\mathbb{E}(f(X)) \geq f(\mathbb{E}(X))$.
+
+**Proof.** At $x_0 = \mathbb{E}(X)$, convexity guarantees the existence of a subgradient $c \in \mathbb{R}$ such that $f(x) \geq f(x_0) + c(x - x_0)$ for all $x$ in the domain. Substituting $x = X(\omega)$: $f(X(\omega)) \geq f(\mathbb{E}(X)) + c(X(\omega) - \mathbb{E}(X))$ for all $\omega$. Taking expectations of both sides: $\mathbb{E}(f(X)) \geq f(\mathbb{E}(X)) + c(\mathbb{E}(X) - \mathbb{E}(X)) = f(\mathbb{E}(X))$. $\square$
+
+</details>
+
 ### Law of the Unconscious Statistician (LOTUS)
 
 Suppose $X$ has a density $f$ (i.e., $F(x) = \mathbb{P}(X \leq x) = \int_{-\infty}^x f(y) \, \mathrm{d}y$). If we want $\mathbb{E}(g(X))$ for some measurable $g$, the naive approach would be to first find the distribution of $g(X)$ and then integrate. LOTUS says we can skip that step:
@@ -110,6 +171,13 @@ $$\mathbb{E}\bigl(g(X)\bigr) = \int_{-\infty}^{\infty} g(x) f(x) \, \mathrm{d}x.
 The name is tongue-in-cheek: undergraduates use this formula instinctively ("unconsciously"), and it looks like it should be the definition rather than a theorem. But it does require proof -- the left side is an integral over $\Omega$ with respect to $\mathbb{P}$, while the right side is an integral over $\mathbb{R}$ with respect to Lebesgue measure weighted by the density.
 
 The proof (non-examinable but instructive) approximates $g$ by simple functions, uses the MCT, and crucially relies on the identity $\mathbb{P}(X^{-1}(A)) = \int_A f(x) \, \mathrm{d}x$ for bounded Borel sets $A$. This identity is established using continuity of measure and the Caratheodory extension: it holds for intervals by definition of the CDF, extends to finite unions of intervals, and then to all Borel sets.
+
+<details>
+<summary>Formal Statement (Theorem 24 — LOTUS)</summary>
+
+**Theorem 24 (LOTUS).** Let $X$ have density $f$. For any measurable $g : \mathbb{R} \to \mathbb{R}$: $\mathbb{E}(g(X)) = \int_{-\infty}^{\infty} g(x) f(x) \, \mathrm{d}x$, provided the integrals exist.
+
+</details>
 
 ## Key Results
 
@@ -125,11 +193,7 @@ The proof (non-examinable but instructive) approximates $g$ by simple functions,
 **Plain English:** A non-negative random variable with small expectation cannot be large with high probability. The tail probability decays at most inversely with the threshold.
 **Formal:** Let $X \geq 0$ be a non-negative random variable with $\mathbb{E}(X) < \infty$. Then for any $t > 0$:
 $$\mathbb{P}(X \geq t) \leq \frac{\mathbb{E}(X)}{t}.$$
-**Proof sketch:**
-1. Let $A = \{\omega : X(\omega) \geq t\}$
-2. Then $X \geq t \cdot \mathbf{1}_A$ pointwise
-3. Integrate: $\mathbb{E}(X) \geq t \, \mathbb{P}(A)$
-4. Rearrange
+**Proof:** Let $A = \{X \geq t\}$. Then $X \geq t \cdot \mathbf{1}_A$ pointwise. Integrate: $\mathbb{E}(X) \geq t\,\mathbb{P}(A)$. Divide by $t > 0$. $\square$
 **Key technique:** Indicator bounding
 **Load-bearing:** yes
 
@@ -138,10 +202,7 @@ $$\mathbb{P}(X \geq t) \leq \frac{\mathbb{E}(X)}{t}.$$
 **Plain English:** A random variable with small variance is unlikely to be far from its mean. The tail probability decays at most inversely with the square of the threshold.
 **Formal:** Let $X$ be a random variable with $\operatorname{Var}(X) < \infty$. Then for any $t > 0$:
 $$\mathbb{P}\bigl(|X - \mathbb{E}(X)| \geq t\bigr) \leq \frac{\operatorname{Var}(X)}{t^2}.$$
-**Proof sketch:**
-1. Note $(X - \mathbb{E}(X))^2 \geq 0$ with expectation $\operatorname{Var}(X)$
-2. Apply Markov's inequality to $(X - \mathbb{E}(X))^2$ with threshold $t^2$
-3. Observe $(X - \mathbb{E}(X))^2 \geq t^2$ iff $|X - \mathbb{E}(X)| \geq t$
+**Proof:** $\{|X - \mathbb{E}(X)| \geq t\} = \{(X - \mathbb{E}(X))^2 \geq t^2\}$. Apply Markov to the non-negative r.v. $(X - \mathbb{E}(X))^2$ with threshold $t^2$: $\mathbb{P}((X - \mathbb{E}(X))^2 \geq t^2) \leq \operatorname{Var}(X)/t^2$. $\square$
 **Key technique:** Reduce to Markov's inequality
 **Load-bearing:** yes
 
@@ -156,7 +217,7 @@ $$\mathbb{P}\bigl(|X - \mathbb{E}(X)| \geq t\bigr) \leq \frac{\operatorname{Var}
 **Number:** Theorem 22
 **Plain English:** Expectation is linear regardless of dependence; for independent random variables, expectation also respects multiplication.
 **Formal:** Let $X, Y$ be random variables on $(\Omega, \mathcal{F}, \mathbb{P})$ with $\mathbb{E}(|X|), \mathbb{E}(|Y|) < \infty$. Then for any $\alpha, \beta \in \mathbb{R}$: $\mathbb{E}(\alpha X + \beta Y) = \alpha \mathbb{E}(X) + \beta \mathbb{E}(Y)$. If additionally $X$ and $Y$ are independent: $\mathbb{E}(XY) = \mathbb{E}(X)\mathbb{E}(Y)$.
-**Proof sketch:** Linearity follows from linearity of the integral. Multiplicativity: first prove for non-negative simple functions using $\mathbb{P}(A_i \cap B_j) = \mathbb{P}(A_i)\mathbb{P}(B_j)$, then extend via MCT (non-negative case) and DCT (general case using $X^+, X^-$).
+**Proof:** Linearity follows from linearity of the Lebesgue integral. Multiplicativity: for non-negative simple $f = \sum_i \alpha_i \mathbf{1}_{A_i}$ ($A_i \in \sigma(X)$) and $g = \sum_j \beta_j \mathbf{1}_{B_j}$ ($B_j \in \sigma(Y)$), independence gives $\mathbb{P}(A_i \cap B_j) = \mathbb{P}(A_i)\mathbb{P}(B_j)$, so $\mathbb{E}(fg) = \mathbb{E}(f)\mathbb{E}(g)$. For non-negative $X, Y$: approximate by simple $f_n \nearrow X$, $g_n \nearrow Y$, then MCT gives $\mathbb{E}(XY) = \lim \mathbb{E}(f_n g_n) = \mathbb{E}(X)\mathbb{E}(Y)$. General case: $\mathbb{E}(|X||Y|) = \mathbb{E}(|X|)\mathbb{E}(|Y|) < \infty$, then approximate $X$ by simple $f_n$ with $|f_n| \leq |X|$ and apply DCT. $\square$
 **Key technique:** Independence + approximation by simple functions
 **Load-bearing:** yes
 
@@ -164,10 +225,7 @@ $$\mathbb{P}\bigl(|X - \mathbb{E}(X)| \geq t\bigr) \leq \frac{\operatorname{Var}
 **Number:** Theorem 23
 **Plain English:** Applying a convex function to a random variable and then taking expectation gives at least as much as taking expectation first and then applying the function. There is also a reverse bound when the range is bounded.
 **Formal:** Let $X$ be a real-valued random variable and $f$ a convex function whose domain contains the range of $X$. Then $\mathbb{E}\bigl(f(X)\bigr) \geq f\bigl(\mathbb{E}(X)\bigr)$. If the range of $X$ is in $[a,b]$ and $\mathbb{E}(X) = \alpha a + (1-\alpha)b$, then $\mathbb{E}\bigl(f(X)\bigr) \leq \alpha f(a) + (1-\alpha)f(b)$.
-**Proof sketch:**
-1. At $x_0 = \mathbb{E}(X)$, find a subgradient $c$ such that $f(x) \geq f(x_0) + c(x - x_0)$ for all $x$
-2. Substitute $x = X(\omega)$ and integrate: $\int f(X) \, \mathrm{d}\mathbb{P} \geq f(x_0) + c(\mathbb{E}(X) - x_0) = f(\mathbb{E}(X))$
-3. Reverse Jensen: use convexity to write $f(X) \leq \frac{X-a}{b-a}f(b) + \frac{b-X}{b-a}f(a)$, then take expectations
+**Proof:** At $x_0 = \mathbb{E}(X)$, convexity guarantees a subgradient $c$ with $f(x) \geq f(x_0) + c(x - x_0)$ for all $x$. Substitute $x = X(\omega)$: $f(X) \geq f(\mathbb{E}(X)) + c(X - \mathbb{E}(X))$ pointwise. Take expectations: $\mathbb{E}(f(X)) \geq f(\mathbb{E}(X)) + c(\mathbb{E}(X) - \mathbb{E}(X)) = f(\mathbb{E}(X))$. $\square$
 **Key technique:** Subgradient existence for convex functions
 **Load-bearing:** yes
 
@@ -177,11 +235,7 @@ $$\mathbb{P}\bigl(|X - \mathbb{E}(X)| \geq t\bigr) \leq \frac{\operatorname{Var}
 **Formal:** Let $X$ be a real-valued random variable with distribution function $F(x) = \mathbb{P}(X \leq x)$, and suppose there exists a density $f : \mathbb{R} \to \mathbb{R}_{\geq 0}$ with $F(x) = \int_{-\infty}^x f(y) \, \mathrm{d}y$. Then for any measurable $g : \mathbb{R} \to \mathbb{R}$:
 $$\mathbb{E}\bigl(g(X)\bigr) = \int_{-\infty}^{\infty} g(x) f(x) \, \mathrm{d}x,$$
 provided the integrals exist.
-**Proof sketch:**
-1. Prove for non-negative $g$: approximate by increasing simple functions $g_n$
-2. For simple $g_n = \sum \alpha_i \mathbf{1}_{A_i}$, use $\mathbb{P}(X^{-1}(A)) = \int_A f(x) \, \mathrm{d}x$ for Borel sets $A$
-3. Apply MCT to pass to the limit
-4. General $g$: split into $g^+ - g^-$
+**Proof:** For non-negative $g$: approximate by simple $g_n = \sum_i \alpha_i \mathbf{1}_{A_i} \nearrow g$. Then $\mathbb{E}(g_n(X)) = \sum_i \alpha_i \mathbb{P}(X \in A_i) = \sum_i \alpha_i \int_{A_i} f(x) \, \mathrm{d}x = \int g_n(x) f(x) \, \mathrm{d}x$. By MCT, $\mathbb{E}(g(X)) = \lim \mathbb{E}(g_n(X)) = \int g(x)f(x) \, \mathrm{d}x$. General $g$: split $g = g^+ - g^-$. $\square$
 **Key technique:** Simple function approximation + MCT + Borel set identity
 **Load-bearing:** no
 

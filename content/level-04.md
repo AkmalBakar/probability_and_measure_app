@@ -15,6 +15,22 @@ Now that we have measure spaces $(X, \mathcal{F}, \mu)$, what can we actually *d
 
 Suppose you have several measures $\mu_1, \mu_2, \ldots$ on the same measurable space $(X, \mathcal{F})$. Can you combine them into a new measure? Theorem 30 says yes: if $\alpha_i > 0$ are positive real numbers (not $\infty$), then $\mu = \sum_{i=1}^\infty \alpha_i \mu_i$ defines a measure on $\mathcal{F}$. The proof boils down to checking countable additivity, which reduces to interchanging two infinite sums of non-negative terms -- and that's justified by the rearrangement results from Level 2 (Theorem 17).
 
+<details>
+<summary>Formal Statement and Proof (Theorem 30)</summary>
+
+**Theorem 30 (Countable linearity of measures).** Let $(X, \mathcal{F}, \mu_i)$ be a measure space for each $i \in \mathbb{N}$, and let $\alpha_i > 0$ be real numbers (not $\infty$). Then $\mu = \sum_{i=1}^\infty \alpha_i \mu_i$ is a measure on $\mathcal{F}$.
+
+**Proof.**
+
+1. **Step 1 — Verify $\mu(\emptyset) = 0$.** We have $\mu(\emptyset) = \sum_{i=1}^\infty \alpha_i \mu_i(\emptyset) = \sum_{i=1}^\infty \alpha_i \cdot 0 = 0$.
+2. **Step 2 — Check countable additivity.** Let $A_1, A_2, \ldots \in \mathcal{F}$ be pairwise disjoint. We need to show $\mu\big(\bigcup_{j=1}^\infty A_j\big) = \sum_{j=1}^\infty \mu(A_j)$. We have $\mu\big(\bigcup_j A_j\big) = \sum_{i=1}^\infty \alpha_i \mu_i\big(\bigcup_j A_j\big) = \sum_{i=1}^\infty \alpha_i \sum_{j=1}^\infty \mu_i(A_j)$, where we used countable additivity of each $\mu_i$.
+3. **Step 3 — Interchange the sums.** All terms $\alpha_i \mu_i(A_j) \geq 0$, so by Theorem 17 (rearrangement of non-negative series), we may interchange the order of summation: $\sum_{i=1}^\infty \sum_{j=1}^\infty \alpha_i \mu_i(A_j) = \sum_{j=1}^\infty \sum_{i=1}^\infty \alpha_i \mu_i(A_j) = \sum_{j=1}^\infty \mu(A_j)$.
+4. **Step 4 — Handle infinite cases.** If any inner sum is $\infty$, both the original and rearranged double sums equal $\infty$, so the identity holds in all cases.
+
+$\square$
+
+</details>
+
 ### Continuity of measure
 
 Theorem 31 is one of the most useful results in the course. It says that measure respects limits of monotone sequences of sets:
@@ -26,6 +42,25 @@ The increasing case follows from writing the union as a disjoint union of "incre
 
 Think of continuity of measure as the analogue of the monotone convergence theorem for sequences of real numbers: monotone + bounded (in the decreasing case) implies the limit behaves as expected.
 
+<details>
+<summary>Formal Statement and Proof (Theorem 31)</summary>
+
+**Theorem 31 (Continuity of measure).** Let $(X, \mathcal{F}, \mu)$ be a measure space.
+
+- **(a)** If $A_1 \subseteq A_2 \subseteq \cdots$ are in $\mathcal{F}$, then $\lim_{n \to \infty} \mu(A_n) = \mu\big(\bigcup_{n \in \mathbb{N}} A_n\big)$.
+- **(b)** If $B_1 \supseteq B_2 \supseteq \cdots$ are in $\mathcal{F}$ and $\mu(B_1) < \infty$, then $\lim_{n \to \infty} \mu(B_n) = \mu\big(\bigcap_{n \in \mathbb{N}} B_n\big)$.
+
+**Proof.**
+
+1. **Step 1 — Increasing case: disjoint decomposition.** Define $C_1 = A_1$ and $C_n = A_n \setminus A_{n-1}$ for $n \geq 2$. The sets $C_n$ are pairwise disjoint (since $C_n \subseteq A_n \setminus A_{n-1}$ and the $A_n$ are nested), and $\bigcup_{n=1}^\infty C_n = \bigcup_{n=1}^\infty A_n$.
+2. **Step 2 — Increasing case: apply countable additivity.** By countable additivity, $\mu\big(\bigcup_{n=1}^\infty A_n\big) = \mu\big(\bigcup_{n=1}^\infty C_n\big) = \sum_{n=1}^\infty \mu(C_n)$. But $\mu(A_n) = \sum_{k=1}^n \mu(C_k)$ by finite additivity (telescoping: $A_n = C_1 \cup C_2 \cup \cdots \cup C_n$, disjoint). So $\lim_{n \to \infty} \mu(A_n) = \lim_{n \to \infty} \sum_{k=1}^n \mu(C_k) = \sum_{k=1}^\infty \mu(C_k) = \mu\big(\bigcup_{n=1}^\infty A_n\big)$.
+3. **Step 3 — Decreasing case: reduce to increasing.** Define $A_n = B_1 \setminus B_{n+1}$. Then $A_1 \subseteq A_2 \subseteq \cdots$ (since $B_{n+1} \supseteq B_{n+2}$ implies $B_1 \setminus B_{n+1} \subseteq B_1 \setminus B_{n+2}$), and $\bigcup_{n=1}^\infty A_n = B_1 \setminus \bigcap_{n=1}^\infty B_n$ (a point is in the union iff it is in $B_1$ but not in every $B_n$).
+4. **Step 4 — Decreasing case: apply increasing case and rearrange.** By the increasing case, $\mu\big(B_1 \setminus \bigcap B_n\big) = \lim_{n \to \infty} \mu(B_1 \setminus B_{n+1})$. Since $\mu(B_1) < \infty$, we have $\mu(B_1 \setminus B_{n+1}) = \mu(B_1) - \mu(B_{n+1})$ and $\mu\big(B_1 \setminus \bigcap B_n\big) = \mu(B_1) - \mu\big(\bigcap B_n\big)$. Substituting: $\mu(B_1) - \mu\big(\bigcap B_n\big) = \lim_{n \to \infty} \big(\mu(B_1) - \mu(B_{n+1})\big) = \mu(B_1) - \lim_{n \to \infty} \mu(B_{n+1})$. Cancelling $\mu(B_1)$ (which is finite) gives $\mu\big(\bigcap B_n\big) = \lim_{n \to \infty} \mu(B_n)$.
+
+$\square$
+
+</details>
+
 ### The union bound (subadditivity)
 
 For any countable collection of sets $A_i \in \mathcal{F}$ (not necessarily disjoint), we have:
@@ -33,6 +68,23 @@ For any countable collection of sets $A_i \in \mathcal{F}$ (not necessarily disj
 $$\mu\Big(\bigcup_{i \in I} A_i\Big) \leq \sum_{i \in I} \mu(A_i).$$
 
 This is the **union bound** (also called **countable subadditivity**), and it appears constantly in probability. The typical use case: you want to show a "bad event" has small probability, but the bad event is a complicated union of simpler events. Even if those simpler events overlap, the union bound gives you a usable upper bound by just summing their individual measures. The proof works by replacing the $A_i$ with disjoint sets $A_i \setminus (A_1 \cup \cdots \cup A_{i-1})$ and applying monotonicity and countable additivity.
+
+<details>
+<summary>Formal Statement and Proof (Union Bound)</summary>
+
+**Union Bound (Exercise 10(c)).** For any countable index set $I$ and sets $A_i \in \mathcal{F}$ for $i \in I$:
+
+$$\mu\Big(\bigcup_{i \in I} A_i\Big) \leq \sum_{i \in I} \mu(A_i).$$
+
+**Proof.**
+
+1. **Step 1 — Replace with disjoint sets.** Without loss of generality, suppose $I = \mathbb{N}$. Define $B_1 = A_1$ and $B_i = A_i \setminus (A_1 \cup \cdots \cup A_{i-1})$ for $i \geq 2$. Then the $B_i$ are pairwise disjoint and $\bigcup_{i=1}^\infty B_i = \bigcup_{i=1}^\infty A_i$.
+2. **Step 2 — Bound each piece.** Since $B_i \subseteq A_i$ for each $i$, monotonicity (Exercise 10(a)) gives $\mu(B_i) \leq \mu(A_i)$.
+3. **Step 3 — Apply countable additivity and comparison.** By countable additivity applied to the disjoint union: $\mu\big(\bigcup_{i=1}^\infty A_i\big) = \mu\big(\bigcup_{i=1}^\infty B_i\big) = \sum_{i=1}^\infty \mu(B_i) \leq \sum_{i=1}^\infty \mu(A_i)$. The final inequality follows from the comparison test (Theorem 19) since $0 \leq \mu(B_i) \leq \mu(A_i)$ for all $i$.
+
+$\square$
+
+</details>
 
 ### Inner and outer measures
 
@@ -42,6 +94,21 @@ Given *any* subset $S \subseteq X$ (not necessarily in $\mathcal{F}$), we can tr
 - **Outer measure:** $\mu^*(S) = \inf\{\mu(A) : A \in \mathcal{F},\, A \supseteq S\}$
 
 These always exist (by the LUBP/GLBP, extended to allow $\infty$), and we always have $\mu_*(S) \leq \mu^*(S)$. When $S \in \mathcal{F}$, both equal $\mu(S)$.
+
+<details>
+<summary>Formal Statement (Inner and Outer Measure)</summary>
+
+**Inner measure.** For any $S \subseteq X$:
+
+$$\mu_*(S) = \sup\{\mu(A) : A \in \mathcal{F},\, A \subseteq S\}.$$
+
+**Outer measure.** For any $S \subseteq X$:
+
+$$\mu^*(S) = \inf\{\mu(A) : A \in \mathcal{F},\, A \supseteq S\}.$$
+
+These are well-defined: the set $\{\mu(A) : A \in \mathcal{F}, A \subseteq S\}$ is non-empty (containing $\mu(\emptyset) = 0$) and the set $\{\mu(A) : A \in \mathcal{F}, A \supseteq S\}$ is non-empty (containing $\mu(X)$). We always have $\mu_*(S) \leq \mu^*(S)$, and when $S \in \mathcal{F}$, both equal $\mu(S)$.
+
+</details>
 
 A remarkable fact (Exercise 11(c)) is that the sup and inf are actually *attained*: there exists a largest measurable subset $A \subseteq S$ with $\mu(A) = \mu_*(S)$, and a smallest measurable superset $B \supseteq S$ with $\mu(B) = \mu^*(S)$. The proof uses continuity of measure (Theorem 31) and the fact that $\mathcal{F}$ is closed under countable unions/intersections.
 
@@ -56,6 +123,17 @@ Consider Lebesgue measure on $\mathbb{R}$ with the Borel $\sigma$-algebra $\math
 1. A set $N \subseteq X$ is **$\mu$-null** if there exists $B \in \mathcal{F}$ with $\mu(B) = 0$ and $N \subseteq B$.
 2. The **completed $\sigma$-algebra** $\bar{\mathcal{F}}$ consists of all sets of the form $S = A \cup N$ where $A \in \mathcal{F}$ and $N$ is $\mu$-null.
 3. The **completion** $\bar{\mu}$ is defined by $\bar{\mu}(S) = \mu(A)$.
+
+<details>
+<summary>Formal Statement (Measure Completion)</summary>
+
+**$\mu$-null set.** A set $N \subseteq X$ is $\mu$-null if there exists $B \in \mathcal{F}$ with $\mu(B) = 0$ and $N \subseteq B$.
+
+**Completed $\sigma$-algebra.** $\bar{\mathcal{F}} = \{A \cup N : A \in \mathcal{F},\, N \text{ is } \mu\text{-null},\, A \cap N = \emptyset\}$.
+
+**Completion of the measure.** For $S = A \cup N \in \bar{\mathcal{F}}$ (with $A \in \mathcal{F}$ and $N$ $\mu$-null, disjoint), define $\bar{\mu}(S) = \mu(A)$. This is well-defined: if $S = A \cup N = A' \cup N'$ are two such decompositions, then $\mu(A) = \mu(A')$ (proved in Exercise 13). The resulting $(X, \bar{\mathcal{F}}, \bar{\mu})$ is a complete measure space, and $\bar{\mu}$ is the unique extension of $\mu$ to $\bar{\mathcal{F}}$.
+
+</details>
 
 Exercise 13 verifies this is well-defined (different decompositions $S = A \cup N = A' \cup N'$ give the same value) and that $(X, \bar{\mathcal{F}}, \bar{\mu})$ is a genuine measure space with $\bar{\mu}$ the unique extension of $\mu$ to $\bar{\mathcal{F}}$.
 
@@ -73,11 +151,11 @@ A set is in the completed $\sigma$-algebra precisely when its inner and outer me
 **Number:** Theorem 30
 **Plain English:** You can build new measures by taking positive linear combinations (even countably infinite ones) of existing measures on the same space.
 **Formal:** Let $(X, \mathcal{F}, \mu_i)$ be a measure space for each $i \in \mathbb{N}$, and let $\alpha_i > 0$ be real numbers (not $\infty$). Then $\mu = \sum_{i=1}^\infty \alpha_i \mu_i$ is a measure on $\mathcal{F}$.
-**Proof sketch:**
-1. $\mu(\emptyset) = \sum \alpha_i \mu_i(\emptyset) = 0$.
-2. For disjoint $A_1, A_2, \ldots \in \mathcal{F}$: need $\sum_i \alpha_i \sum_j \mu_i(A_j) = \sum_j \sum_i \alpha_i \mu_i(A_j)$.
-3. All terms are non-negative, so Theorem 17 (rearrangement of non-negative series) justifies the interchange.
-4. Handle infinite cases separately: if any inner sum is $\infty$, both sides are $\infty$.
+**Proof:**
+1. **Step 1 — Verify $\mu(\emptyset) = 0$.** $\mu(\emptyset) = \sum_{i=1}^\infty \alpha_i \mu_i(\emptyset) = \sum_{i=1}^\infty \alpha_i \cdot 0 = 0$.
+2. **Step 2 — Set up countable additivity.** Let $A_1, A_2, \ldots \in \mathcal{F}$ be pairwise disjoint. We need $\mu\big(\bigcup_{j=1}^\infty A_j\big) = \sum_{j=1}^\infty \mu(A_j)$. By definition, $\mu\big(\bigcup_j A_j\big) = \sum_{i=1}^\infty \alpha_i \mu_i\big(\bigcup_j A_j\big) = \sum_{i=1}^\infty \alpha_i \sum_{j=1}^\infty \mu_i(A_j)$, using countable additivity of each $\mu_i$.
+3. **Step 3 — Interchange the sums.** All terms $\alpha_i \mu_i(A_j) \geq 0$, so Theorem 17 (rearrangement of non-negative series) justifies the interchange: $\sum_{i=1}^\infty \sum_{j=1}^\infty \alpha_i \mu_i(A_j) = \sum_{j=1}^\infty \sum_{i=1}^\infty \alpha_i \mu_i(A_j) = \sum_{j=1}^\infty \mu(A_j)$.
+4. **Step 4 — Handle infinite cases.** If any inner sum is $\infty$, both the original and rearranged double sums equal $\infty$, so the identity holds in all cases. $\square$
 **Key technique:** Interchange of summation for non-negative series
 **Load-bearing:** no
 
@@ -85,9 +163,11 @@ A set is in the completed $\sigma$-algebra precisely when its inner and outer me
 **Number:** Theorem 31
 **Plain English:** If sets grow toward a limit (increasing sequence) or shrink toward a limit (decreasing sequence, with finite starting measure), the measure converges to the measure of the limit set.
 **Formal:** Let $(X, \mathcal{F}, \mu)$ be a measure space. If $A_1 \subseteq A_2 \subseteq \cdots$ are in $\mathcal{F}$, then $\lim_{n \to \infty} \mu(A_n) = \mu\big(\bigcup_{n \in \mathbb{N}} A_n\big)$. If $B_1 \supseteq B_2 \supseteq \cdots$ are in $\mathcal{F}$ and $\mu(B_1) < \infty$, then $\lim_{n \to \infty} \mu(B_n) = \mu\big(\bigcap_{n \in \mathbb{N}} B_n\big)$.
-**Proof sketch:**
-1. *Increasing:* Let $a_1 = \mu(A_1)$ and $a_n = \mu(A_n \setminus A_{n-1})$ for $n \geq 2$. The sets $A_n \setminus A_{n-1}$ are disjoint with union $\bigcup A_n$. By countable additivity, $\mu(\bigcup A_n) = \sum a_i$. But $\mu(A_n) = \sum_{i=1}^n a_i$ (finite additivity / telescoping), so $\mu(A_n) \to \sum_{i=1}^\infty a_i = \mu(\bigcup A_n)$.
-2. *Decreasing:* Let $A_n = B_1 \setminus B_{n+1}$. Then $A_n$ is increasing, and $\bigcup A_n = B_1 \setminus \bigcap B_n$. Apply the increasing case and rearrange, using $\mu(B_1) < \infty$ to subtract.
+**Proof:**
+1. **Step 1 — Increasing case: disjoint decomposition.** Define $C_1 = A_1$ and $C_n = A_n \setminus A_{n-1}$ for $n \geq 2$. The sets $C_n$ are pairwise disjoint and $\bigcup_{n=1}^\infty C_n = \bigcup_{n=1}^\infty A_n$.
+2. **Step 2 — Increasing case: apply countable additivity.** By countable additivity, $\mu\big(\bigcup_{n=1}^\infty A_n\big) = \sum_{n=1}^\infty \mu(C_n)$. By finite additivity (telescoping), $\mu(A_n) = \sum_{k=1}^n \mu(C_k)$. Therefore $\lim_{n \to \infty} \mu(A_n) = \sum_{k=1}^\infty \mu(C_k) = \mu\big(\bigcup_{n=1}^\infty A_n\big)$.
+3. **Step 3 — Decreasing case: reduce to increasing.** Define $A_n = B_1 \setminus B_{n+1}$. Then $A_1 \subseteq A_2 \subseteq \cdots$ and $\bigcup_{n=1}^\infty A_n = B_1 \setminus \bigcap_{n=1}^\infty B_n$.
+4. **Step 4 — Decreasing case: apply increasing case and rearrange.** By the increasing case, $\mu\big(B_1 \setminus \bigcap B_n\big) = \lim_{n \to \infty} \mu(B_1 \setminus B_{n+1})$. Since $\mu(B_1) < \infty$, we can write $\mu(B_1 \setminus B_{n+1}) = \mu(B_1) - \mu(B_{n+1})$ and $\mu\big(B_1 \setminus \bigcap B_n\big) = \mu(B_1) - \mu\big(\bigcap B_n\big)$. Substituting and cancelling $\mu(B_1)$ (finite) gives $\mu\big(\bigcap_{n=1}^\infty B_n\big) = \lim_{n \to \infty} \mu(B_n)$. $\square$
 **Key technique:** Disjoint decomposition + countable additivity
 **Load-bearing:** yes
 
@@ -95,7 +175,10 @@ A set is in the completed $\sigma$-algebra precisely when its inner and outer me
 **Number:** Exercise 10(c)
 **Plain English:** The measure of a union is at most the sum of the individual measures -- even when the sets overlap.
 **Formal:** For any countable index set $I$ and sets $A_i \in \mathcal{F}$ for $i \in I$: $\mu\big(\bigcup_{i \in I} A_i\big) \leq \sum_{i \in I} \mu(A_i)$.
-**Proof sketch:** Let $b_i = \mu\big(A_i \setminus (A_1 \cup \cdots \cup A_{i-1})\big) \leq \mu(A_i)$ by monotonicity (Exercise 10(a)). The sets $A_i \setminus (A_1 \cup \cdots \cup A_{i-1})$ are disjoint with the same union as the $A_i$. By countable additivity, $\mu(\bigcup A_i) = \sum b_i \leq \sum \mu(A_i)$.
+**Proof:**
+1. **Step 1 — Replace with disjoint sets.** Without loss of generality, suppose $I = \mathbb{N}$. Define $B_1 = A_1$ and $B_i = A_i \setminus (A_1 \cup \cdots \cup A_{i-1})$ for $i \geq 2$. The sets $B_i$ are pairwise disjoint and $\bigcup_{i=1}^\infty B_i = \bigcup_{i=1}^\infty A_i$.
+2. **Step 2 — Bound each piece.** Since $B_i \subseteq A_i$ for each $i$, monotonicity (Exercise 10(a)) gives $\mu(B_i) \leq \mu(A_i)$.
+3. **Step 3 — Apply countable additivity and comparison.** By countable additivity applied to the disjoint union: $\mu\big(\bigcup_{i=1}^\infty A_i\big) = \sum_{i=1}^\infty \mu(B_i) \leq \sum_{i=1}^\infty \mu(A_i)$. The inequality follows from the comparison test (Theorem 19) since $0 \leq \mu(B_i) \leq \mu(A_i)$ for all $i$. $\square$
 **Key technique:** Replace overlapping sets with disjoint ones
 **Load-bearing:** yes
 

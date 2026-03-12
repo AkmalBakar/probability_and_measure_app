@@ -31,7 +31,9 @@ export default function CardsTab({ keyResults, isReviewed, onMarkReviewed }) {
 
   const badgeClass = `badge badge-${card.type}`;
 
-  const hasExtras = card.proofSketchHtml || card.keyTechniqueHtml || card.dependsOnHtml || card.usedByHtml;
+  const proofContent = card.proofHtml || card.proofSketchHtml;
+  const proofLabel = card.proofHtml ? 'Proof:' : 'Proof sketch:';
+  const hasExtras = proofContent || card.keyTechniqueHtml || card.dependsOnHtml || card.usedByHtml;
 
   return (
     <div className="tab-content">
@@ -53,10 +55,10 @@ export default function CardsTab({ keyResults, isReviewed, onMarkReviewed }) {
           <>
             {extrasRevealed ? (
               <div className="card-extra">
-                {card.proofSketchHtml && (
+                {proofContent && (
                   <div>
-                    <strong>Proof sketch:</strong>
-                    <div dangerouslySetInnerHTML={{ __html: card.proofSketchHtml }} />
+                    <strong>{proofLabel}</strong>
+                    <div dangerouslySetInnerHTML={{ __html: proofContent }} />
                   </div>
                 )}
                 {card.keyTechniqueHtml && <div><strong>Key technique:</strong> <span dangerouslySetInnerHTML={{ __html: card.keyTechniqueHtml }} /></div>}

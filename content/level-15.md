@@ -1,6 +1,7 @@
 ---
 level: 15
 title: "Properties of Conditional Expectation"
+status: wip
 notes: 4
 prerequisites: [14]
 ---

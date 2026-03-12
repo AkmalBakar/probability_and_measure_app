@@ -1,6 +1,7 @@
 ---
 level: 24
 title: "Binomial Financial Model"
+status: wip
 notes: 6
 prerequisites: [23, 16]
 ---

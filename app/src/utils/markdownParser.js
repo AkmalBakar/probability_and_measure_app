@@ -41,6 +41,7 @@ export function parseLevel(raw) {
       title: meta.title || `Level ${meta.level}`,
       notes: meta.notes,
       prerequisites: meta.prerequisites || [],
+      status: meta.status || null,
     },
     readingHtml,
     keyResults,
@@ -99,6 +100,7 @@ function parseKeyResults(text) {
       number: extractField(content, 'Number'),
       plainEnglishHtml: renderMath(extractField(content, 'Plain English')),
       formalHtml: renderMath(extractField(content, 'Formal')),
+      proofHtml: renderMath(extractField(content, 'Proof')),
       proofSketchHtml: renderMath(extractField(content, 'Proof sketch')),
       keyTechniqueHtml: renderMath(extractField(content, 'Key technique')),
       dependsOnHtml: renderMath(extractField(content, 'Depends on')),
@@ -159,7 +161,7 @@ function parseExercises(text) {
  */
 function extractField(text, fieldName) {
   const knownFields = [
-    'Number', 'Plain English', 'Formal', 'Proof sketch', 'Key technique',
+    'Number', 'Plain English', 'Formal', 'Proof', 'Proof sketch', 'Key technique',
     'Depends on', 'Used by', 'Load-bearing', 'Difficulty', 'Tags',
     'Question', 'Hint 1', 'Hint 2', 'Hint 3', 'Hint 4', 'Hint 5',
     'Solution',

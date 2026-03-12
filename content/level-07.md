@@ -26,6 +26,13 @@ $$f = \sum_{i=1}^{n} \alpha_i \mathbf{1}_{A_i}$$
 
 where each $A_i \in \mathcal{F}$ and $\alpha_i \in \mathbb{R}$. The sets $A_i$ here need not be disjoint -- but as we'll see in Exercise 3, we can always find a representation where they are.
 
+<details>
+<summary>Formal Statement (Definition 11)</summary>
+
+**Definition 11 (Simple function).** Given a probability space $(\Omega, \mathcal{F}, \mathbb{P})$, for any $A \in \mathcal{F}$ we call $\mathbf{1}_A$ simple. Any scalar multiple of a simple function is simple, and any sum of two simple functions is simple. Equivalently, $f$ is simple iff $f = \sum_{i=1}^{n} \alpha_i \mathbf{1}_{A_i}$ for some $\alpha_i \in \mathbb{R}$ and $A_i \in \mathcal{F}$.
+
+</details>
+
 (While we allow $\pm\infty$ in the codomain for technical convenience, the interesting cases are real-valued.)
 
 ### Representations of simple functions
@@ -61,6 +68,23 @@ The partial sums $g_n = \sum_{i=1}^{n} \alpha_i \mathbf{1}_{A_i}$ are simple fun
 
 **The $\sigma$-algebra property.** The approximating sequence also satisfies $\sigma(g_n) \subseteq \sigma(f)$ for all $n$. This is because each $A_n$ is defined using only level sets of $f$ (or functions derived from $f$), so the information in $g_n$ is always a "coarsening" of the information in $f$.
 
+<details>
+<summary>Formal Statement (Approximation by Simple Functions)</summary>
+
+**Theorem (Approximation).** For any non-negative measurable $f : \Omega \to \mathbb{R}_{\geq 0}^{\infty}$, there exists a sequence of simple functions $(g_n)_{n \in \mathbb{N}}$ with $0 \leq g_1 \leq g_2 \leq \cdots$ and $g_n(\omega) \to f(\omega)$ for all $\omega$. If $f$ is bounded, the convergence is uniform. Moreover, $\sigma(g_n) \subseteq \sigma(f)$ for all $n$.
+
+**Proof.**
+
+1. **Step 1 — Construction.** Set $f_0 = f$. For odd $n$: let $A_n = \{f_{n-1} \geq 1\}$, $\alpha_n = 1$, $f_n = f_{n-1} - \mathbf{1}_{A_n}$. For even $n$: let $A_n = \{\text{fractional part of } f_{n-1} \geq 2^{-n/2}\}$, $\alpha_n = 2^{-n/2}$, $f_n = f_{n-1} - 2^{-n/2}\mathbf{1}_{A_n}$. Define $g_n = \sum_{i=1}^n \alpha_i \mathbf{1}_{A_i}$.
+2. **Step 2 — Monotonicity.** $g_n - g_{n-1} = \alpha_n \mathbf{1}_{A_n} \geq 0$, so $(g_n)$ is monotone increasing.
+3. **Step 3 — Pointwise convergence.** If $f(\omega) = \infty$: $\omega \in A_n$ for every odd $n$, so $g_n(\omega) \geq n/2 \to \infty$. If $f(\omega) = t + x$ with $t \in \mathbb{N}_0$ and $0 \leq x < 1$: the odd steps peel off the integer part (contributing $t$ after $2t$ steps), while the even steps read off the binary digits of $x$, giving $g_n(\omega) \to t + x = f(\omega)$.
+4. **Step 4 — Uniform convergence for bounded $f$.** If $0 \leq f \leq T$, then for odd $n \geq 2T + 1$, the integer part is exhausted and $A_n = \emptyset$. The remaining error is $\leq 2^{-n/2}$.
+5. **Step 5 — $\sigma$-algebra containment.** By induction: $A_1 = f^{-1}([1,\infty]) \in \sigma(f)$. Inductively, $f_{n-1} = f - g_{n-1}$ is $\sigma(f)$-measurable (by Theorem 5 and the inductive hypothesis), so $A_n$ is a level set of a $\sigma(f)$-measurable function, hence $A_n \in \sigma(f)$.
+
+$\square$
+
+</details>
+
 ### Measurability via factorisation
 
 The level concludes with a beautiful characterisation of $\sigma(f)$-measurability.
@@ -68,6 +92,22 @@ The level concludes with a beautiful characterisation of $\sigma(f)$-measurabili
 Suppose $f$ is an $(X, \mathcal{F}_X, \mu)$-valued random variable on $(\Omega, \mathcal{F}, \mathbb{P})$, and $g$ is another random variable on the same space. We know that $g$ is $\sigma(f)$-measurable if and only if $g$ "depends only on $f$" -- but what does this mean precisely?
 
 Theorem 12 says: $g$ is $\sigma(f)$-measurable if and only if there exists a measurable function $h : X \to \mathbb{R}^{\pm\infty}$ such that $g(\omega) = h(f(\omega))$ for all $\omega \in \Omega$. In other words, $g$ factors through $f$ via a measurable map. The "if" direction is straightforward (pullback of measurable maps is measurable). The "only if" direction is the interesting part: you first prove it for simple $g$ (Exercise 5), then extend to non-negative $g$ using the approximation theorem, and finally handle general $g$ by splitting into positive and negative parts.
+
+<details>
+<summary>Formal Statement & Proof (Theorem 12)</summary>
+
+**Theorem 12 (Factorisation).** Let $f$ be any $(X, \mathcal{F}_X, \mu)$-valued random variable on $(\Omega, \mathcal{F}, \mathbb{P})$, and let $g$ be a $\mathbb{R}^{\pm\infty}$-valued random variable. Then the following are equivalent: (i) there exists a $(\mathcal{F}_X, \mathcal{B}(\mathbb{R}^{\pm\infty}))$-measurable $h : X \to \mathbb{R}^{\pm\infty}$ with $g(\omega) = h(f(\omega))$ for all $\omega$; (ii) $g$ is $\sigma(f)$-measurable.
+
+**Proof.**
+
+1. **Step 1 — (i) $\Rightarrow$ (ii).** If $g = h \circ f$ for measurable $h$, then for any $S \in \mathcal{B}(\mathbb{R}^{\pm\infty})$: $g^{-1}(S) = f^{-1}(h^{-1}(S))$. Since $h$ is measurable, $h^{-1}(S) \in \mathcal{F}_X$, and by definition of $\sigma(f)$, $f^{-1}(h^{-1}(S)) \in \sigma(f)$. So $g$ is $\sigma(f)$-measurable.
+2. **Step 2 — (ii) $\Rightarrow$ (i) for simple $g$.** By Exercise 3, write $g = \sum_{i=1}^t \alpha_i \mathbf{1}_{A_i}$ as a minimal disjoint indicator representation. Since $g$ is $\sigma(f)$-measurable, each level set $A_r = g^{-1}(\{r\})$ is in $\sigma(f)$, so $A_r = f^{-1}(B_r)$ for some $B_r \in \mathcal{F}_X$. Refine the $B_r$ to be pairwise disjoint. Define $h(x) = r$ if $x \in B_r'$, $h(x) = 0$ otherwise. Then $h$ is measurable and $g = h \circ f$.
+3. **Step 3 — (ii) $\Rightarrow$ (i) for non-negative $g$.** Use the approximation theorem: let $g_1 \leq g_2 \leq \cdots$ be simple functions with $g_n \to g$ pointwise and $\sigma(g_n) \subseteq \sigma(g) \subseteq \sigma(f)$. By Step 2, $g_n = h_n \circ f$ for measurable $h_n$. For any $x$ in the range of $f$, the sequence $h_1(x), h_2(x), \ldots$ is monotone increasing. Let $h = \sup_n h_n$, which is measurable by Theorem 5. For any $\omega \in \Omega$: $h(f(\omega)) = \lim h_n(f(\omega)) = \lim g_n(\omega) = g(\omega)$.
+4. **Step 4 — (ii) $\Rightarrow$ (i) for general $g$.** Write $g = g^+ - g^-$. Apply Step 3 to $g^+$ and $g^-$ separately to get $h^+$ and $h^-$. The required function is $h = h^+ - h^-$.
+
+$\square$
+
+</details>
 
 ## Key Results
 
@@ -81,12 +121,7 @@ Theorem 12 says: $g$ is $\sigma(f)$-measurable if and only if there exists a mea
 **Number:** (Construction preceding Exercise 4)
 **Plain English:** Every non-negative measurable function is the pointwise limit of an increasing sequence of simple functions. For bounded functions, the convergence is uniform.
 **Formal:** For any non-negative measurable $f : \Omega \to \mathbb{R}_{\geq 0}^{\infty}$, there exists a sequence of simple functions $(g_n)_{n \in \mathbb{N}}$ with $0 \leq g_1 \leq g_2 \leq \cdots$ and $g_n(\omega) \to f(\omega)$ for all $\omega$. If $f$ is bounded, the convergence is uniform. Moreover, $\sigma(g_n) \subseteq \sigma(f)$ for all $n$.
-**Proof sketch:**
-1. Alternately peel off integer layers (odd steps) and binary fractional layers (even steps)
-2. Monotonicity: each $g_n - g_{n-1} = \alpha_n \mathbf{1}_{A_n} \geq 0$
-3. Pointwise convergence by binary expansion of $f(\omega)$
-4. Uniform convergence for bounded $f$: error $\leq 2^{-n/2}$ once integer part is exhausted
-5. $\sigma$-algebra containment by induction: each $A_n \in \sigma(f)$
+**Proof:** Construct $g_n = \sum_{i=1}^n \alpha_i \mathbf{1}_{A_i}$ where odd steps peel off integer layers ($A_n = \{f_{n-1} \geq 1\}$, $\alpha_n = 1$) and even steps refine binary fractional approximation ($A_n = \{\text{frac}(f_{n-1}) \geq 2^{-n/2}\}$, $\alpha_n = 2^{-n/2}$). Monotonicity: $g_n - g_{n-1} = \alpha_n \mathbf{1}_{A_n} \geq 0$. Convergence: if $f(\omega) = \infty$, odd steps give $g_n \geq n/2 \to \infty$; if $f(\omega) = t + x$, odd steps contribute $t$ and even steps read binary digits of $x$, so $g_n(\omega) \to t + x$. Uniform for bounded $f$: once integer part exhausted (odd $n \geq 2T+1$), error $\leq 2^{-n/2}$. $\sigma$-algebra: by induction, each $A_n \in \sigma(f)$ since $f_{n-1} = f - g_{n-1}$ is $\sigma(f)$-measurable. $\square$
 **Key technique:** Binary expansion / dyadic approximation
 **Load-bearing:** yes
 
@@ -94,9 +129,7 @@ Theorem 12 says: $g$ is $\sigma(f)$-measurable if and only if there exists a mea
 **Number:** Theorem 12
 **Plain English:** A random variable $g$ is $\sigma(f)$-measurable if and only if $g$ can be written as a measurable function of $f$ -- meaning $g$ depends on $\omega$ only through the value $f(\omega)$.
 **Formal:** Let $f$ be any $(X, \mathcal{F}_X, \mu)$-valued random variable on $(\Omega, \mathcal{F}, \mathbb{P})$, and let $g$ be a $\mathbb{R}^{\pm\infty}$-valued random variable. Then the following are equivalent: (i) there exists a $(\mathcal{F}_X, \mathcal{B}(\mathbb{R}^{\pm\infty}))$-measurable $h : X \to \mathbb{R}^{\pm\infty}$ with $g(\omega) = h(f(\omega))$ for all $\omega$; (ii) $g$ is $\sigma(f)$-measurable.
-**Proof sketch:**
-1. (i) $\Rightarrow$ (ii): If $g = h \circ f$ and $S$ is Borel, then $g^{-1}(S) = f^{-1}(h^{-1}(S)) \in \sigma(f)$
-2. (ii) $\Rightarrow$ (i): Prove first for simple $g$ (Exercise 5), then extend to non-negative $g$ via approximation, then to general $g$
+**Proof:** (i) $\Rightarrow$ (ii): If $g = h \circ f$, then $g^{-1}(S) = f^{-1}(h^{-1}(S)) \in \sigma(f)$ for any Borel $S$. (ii) $\Rightarrow$ (i): For simple $g$, write $g = \sum \alpha_i \mathbf{1}_{A_i}$ minimally; each $A_r = g^{-1}(\{r\}) \in \sigma(f)$ gives $A_r = f^{-1}(B_r)$; define $h(x) = r$ on $B_r$. For non-negative $g$, approximate by simple $g_n \to g$ with $g_n = h_n \circ f$; let $h = \sup_n h_n$ (measurable by Theorem 5), then $h(f(\omega)) = \lim h_n(f(\omega)) = \lim g_n(\omega) = g(\omega)$. For general $g$, split $g = g^+ - g^-$ and apply the non-negative case to each part. $\square$
 **Key technique:** Approximation by simple functions + pointwise limits
 **Load-bearing:** yes
 

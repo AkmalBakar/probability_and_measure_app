@@ -51,7 +51,7 @@ export default function LevelScreen({ levelId, initialTab }) {
         <button className="back-btn" onClick={() => navigate('#/')}>
           &#8592;
         </button>
-        <h1>Level {levelId}: {level.meta.title}</h1>
+        <h1>Level {levelId}: {level.meta.title}{level.meta.status === 'wip' && <span className="badge badge-wip" style={{ marginLeft: 8, verticalAlign: 'middle' }}>WIP</span>}</h1>
         <span
           className="level-status"
           style={{

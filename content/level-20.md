@@ -1,6 +1,7 @@
 ---
 level: 20
 title: "Markov Chains"
+status: wip
 notes: 5
 prerequisites: [19]
 ---

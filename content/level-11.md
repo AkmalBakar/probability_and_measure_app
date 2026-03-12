@@ -1,6 +1,7 @@
 ---
 level: 11
 title: "Sub-Gaussian Random Variables & Applications"
+status: wip
 notes: 3
 prerequisites: [10]
 ---

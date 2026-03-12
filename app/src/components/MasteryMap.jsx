@@ -142,6 +142,11 @@ export default function MasteryMap() {
               <text className="map-node-title" x={pos.x} y={pos.y + NODE_RADIUS + 10}>
                 {SHORT_TITLES[id] || ''}
               </text>
+              {level.meta.status === 'wip' && (
+                <text className="map-node-wip" x={pos.x} y={pos.y + NODE_RADIUS + 18}>
+                  WIP
+                </text>
+              )}
             </g>
           );
         })}

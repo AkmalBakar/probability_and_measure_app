@@ -47,6 +47,13 @@ where the supremum ranges over all non-negative simple functions $g$ with $g \le
 
 This is analogous to the lower Darboux sum in the Riemann theory, but we do not need a matching upper bound. The "magic" of the Lebesgue integral is that this supremum definition alone gives us the right answer, because we are approximating using *all* simple functions below $f$, not just step functions tied to a fixed partition.
 
+<details>
+<summary>Formal Statement (Definition 13)</summary>
+
+**Definition 13 (Lebesgue integral, non-negative functions).** Let $(\Omega, \mathcal{F}, \mathbb{P})$ be any probability space. If $g = \sum_{i=1}^t \alpha_i \mathbf{1}_{A_i}$ is any simple function, we define $\int_\Omega g \, \mathrm{d}\mathbb{P} = \sum_{i=1}^t \alpha_i \, \mathbb{P}(A_i)$. For any non-negative measurable $f : \Omega \to \mathbb{R}_{\geq 0}^\infty$, we define $\int_\Omega f \, \mathrm{d}\mathbb{P} = \sup_g \int_\Omega g \, \mathrm{d}\mathbb{P}$, where the supremum is over non-negative simple $g$ with $g \leq f$ pointwise.
+
+</details>
+
 Note that we allow $f$ to take the value $\infty$. This is technically convenient: it means that taking limits of non-negative measurable functions always produces a non-negative measurable function. If $f = \infty$ on a set of positive measure, then $\int f \, \mathrm{d}\mathbb{P} = \infty$; but "interesting" functions are only $\infty$ on a set of measure zero.
 
 **Notation.** We usually write $\int_\Omega f(\omega) \, \mathrm{d}\mathbb{P}(\omega)$ or $\int_X f(x) \, \mathrm{d}x$ depending on context. We write $\int_A f \, \mathrm{d}\mathbb{P}$ to mean $\int_\Omega f \cdot \mathbf{1}_A \, \mathrm{d}\mathbb{P}$.
@@ -97,6 +104,25 @@ The proof has two directions:
 
 The MCT is what makes the Lebesgue integral powerful: it is the engine behind linearity of the integral for general non-negative functions, and it underpins both Fatou's Lemma and the Dominated Convergence Theorem.
 
+<details>
+<summary>Formal Statement & Proof (Theorem 14 — MCT)</summary>
+
+**Theorem 14 (Monotone Convergence Theorem).** Let $f_1, f_2, \ldots$ be measurable functions on $(\Omega, \mathcal{F}, \mathbb{P})$ with $0 \leq f_1 \leq f_2 \leq \ldots$ pointwise. Then $f = \lim_{n \to \infty} f_n$ is measurable, and $\lim_{n \to \infty} \int_\Omega f_n \, \mathrm{d}\mathbb{P} = \int_\Omega f \, \mathrm{d}\mathbb{P}$.
+
+**Proof.**
+
+$f = \lim f_n$ exists pointwise (monotone increasing sequence in $[0, \infty]$) and is measurable by Theorem 5. Similarly, $\lim \int f_n$ exists (monotone increasing sequence in $[0, \infty]$).
+
+1. **Step 1 — $\leq$ direction.** Since $f_n \leq f$ pointwise for all $n$, monotonicity of the integral gives $\int f_n \leq \int f$. Taking $n \to \infty$: $\lim \int f_n \leq \int f$.
+2. **Step 2 — $\geq$ direction.** Let $g$ be any non-negative simple function with $g \leq f$ pointwise, and fix $0 < \gamma < 1$. Define $A_n = \{\omega : f_n(\omega) \geq \gamma g(\omega)\}$. These sets are nested ($A_n \subseteq A_{n+1}$) because $f_n$ is increasing.
+3. **Step 3 — Show $\bigcup A_n = \Omega$.** If $g(\omega) = 0$, then $\omega \in A_1$. If $g(\omega) > 0$, then $f(\omega) \geq g(\omega) > \gamma g(\omega)$, and since $f_n(\omega) \to f(\omega)$, eventually $f_n(\omega) \geq \gamma g(\omega)$, so $\omega \in A_n$ for large $n$.
+4. **Step 4 — Apply continuity of measure.** By monotonicity, $\int f_n \geq \int f_n \mathbf{1}_{A_n} \geq \gamma \int g \mathbf{1}_{A_n}$. Since $g$ is a simple function and $A_1 \subseteq A_2 \subseteq \ldots$ with $\bigcup A_n = \Omega$, Exercise 9 gives $\lim_{n \to \infty} \int g \mathbf{1}_{A_n} = \int g$. Therefore $\lim \int f_n \geq \gamma \int g$.
+5. **Step 5 — Let $\gamma \to 1$.** Since $\gamma < 1$ was arbitrary, $\lim \int f_n \geq \int g$. Taking the supremum over all simple $g \leq f$: $\lim \int f_n \geq \int f$.
+
+$\square$
+
+</details>
+
 ### Fatou's Lemma
 
 What if the sequence is not monotone? Fatou's Lemma gives a one-sided bound.
@@ -109,6 +135,22 @@ Recall that $\liminf_{n \to \infty} f_n = \lim_{n \to \infty} \inf_{k \geq n} f_
 
 There is also a **Reverse Fatou Lemma**: if $f_1, f_2, \ldots$ are pointwise bounded above by some integrable $g$ (i.e., $\int g \, \mathrm{d}\mathbb{P} < \infty$), then $\int \limsup f_n \geq \limsup \int f_n$. This follows by applying Fatou to $g - f_n$.
 
+<details>
+<summary>Formal Statement & Proof (Theorem 15 — Fatou's Lemma)</summary>
+
+**Theorem 15 (Fatou's Lemma).** Let $f_1, f_2, \ldots$ be any non-negative measurable functions. Then $\int_\Omega \liminf_{n \to \infty} f_n \, \mathrm{d}\mathbb{P} \leq \liminf_{n \to \infty} \int_\Omega f_n \, \mathrm{d}\mathbb{P}$.
+
+**Proof.**
+
+1. **Step 1 — Define a monotone sequence.** Let $g_n = \inf_{k \geq n} f_k$. Each $g_n$ is measurable (Theorem 5). The sequence is monotone increasing: $g_{n+1} = \inf_{k \geq n+1} f_k \geq \inf_{k \geq n} f_k = g_n$ (infimum over a smaller set).
+2. **Step 2 — Identify the limit.** $\lim_{n \to \infty} g_n = \sup_{n \in \mathbb{N}} \inf_{k \geq n} f_k = \liminf_{n \to \infty} f_n$ by definition.
+3. **Step 3 — Apply MCT.** Since $(g_n)$ is monotone increasing and non-negative, MCT gives $\int \liminf f_n = \int \lim g_n = \lim \int g_n$.
+4. **Step 4 — Use $g_n \leq f_n$.** Since $g_n = \inf_{k \geq n} f_k \leq f_n$, monotonicity of the integral gives $\int g_n \leq \int f_n$ for all $n$. Therefore $\lim \int g_n \leq \liminf \int f_n$ (if $a_n \leq b_n$ for all $n$ and $\lim a_n$ exists, then $\lim a_n \leq \liminf b_n$).
+
+$\square$
+
+</details>
+
 ### Stage 3: General measurable functions
 
 So far we have only integrated non-negative functions. For a general measurable function $f : \Omega \to \mathbb{R}^{\pm\infty}$, we split it into positive and negative parts:
@@ -120,6 +162,13 @@ Both $f^+$ and $f^-$ are non-negative measurable functions, and $f = f^+ - f^-$.
 $$\int_\Omega f \, \mathrm{d}\mathbb{P} = \int_\Omega f^+ \, \mathrm{d}\mathbb{P} - \int_\Omega f^- \, \mathrm{d}\mathbb{P},$$
 
 provided at most one of $\int f^+$ and $\int f^-$ is $\infty$ (otherwise the integral is undefined). This integral is still linear and monotonic, and agrees with Definition 13 on simple functions.
+
+<details>
+<summary>Formal Statement (Definition 16)</summary>
+
+**Definition 16 (Lebesgue integral, general functions).** Given a measurable $f : \Omega \to \mathbb{R}^{\pm\infty}$, let $f^+ = \max(f,0)$ and $f^- = -\max(-f,0)$. If at most one of $\int f^+, \int f^-$ is $\infty$, define $\int_\Omega f \, \mathrm{d}\mathbb{P} = \int_\Omega f^+ \, \mathrm{d}\mathbb{P} - \int_\Omega f^- \, \mathrm{d}\mathbb{P}$.
+
+</details>
 
 ### Riemann vs Lebesgue: the full picture
 
@@ -145,6 +194,22 @@ $$\int_\Omega f \, \mathrm{d}\mathbb{P} = \lim_{n \to \infty} \int_\Omega f_n \,
 
 The proof applies Fatou's Lemma to $g + f_n \geq 0$ and to $g - f_n \geq 0$, obtaining both $\int f \leq \liminf \int f_n$ and $\int f \geq \limsup \int f_n$, so the limit exists and equals $\int f$.
 
+<details>
+<summary>Formal Statement & Proof (Theorem 17 — DCT)</summary>
+
+**Theorem 17 (Dominated Convergence Theorem).** Let $f_1, f_2, \ldots$ be measurable functions from $\Omega$ to $\mathbb{R}^{\pm\infty}$ converging pointwise to $f$. Suppose there exists $g : \Omega \to \mathbb{R}_{\geq 0}^\infty$ with $\int g \, \mathrm{d}\mathbb{P} < \infty$ and $|f_n| \leq g$ pointwise for all $n$. Then $\int f \, \mathrm{d}\mathbb{P} = \lim \int f_n \, \mathrm{d}\mathbb{P}$ and $\lim \int |f - f_n| \, \mathrm{d}\mathbb{P} = 0$.
+
+**Proof.**
+
+1. **Step 1 — Bound $|f - f_n|$.** By the triangle inequality, $|f - f_n| \leq |f| + |f_n| \leq 2g$ pointwise. Since $f_n \to f$ pointwise, $\limsup_{n \to \infty} |f - f_n| = 0$.
+2. **Step 2 — Apply Reverse Fatou.** The functions $2g - |f - f_n| \geq 0$ are non-negative. Apply Fatou's Lemma: $\int \liminf(2g - |f - f_n|) \leq \liminf \int(2g - |f - f_n|)$. The left side is $\int 2g$ (since $\liminf(2g - |f - f_n|) = 2g - \limsup|f - f_n| = 2g$). So $\int 2g \leq \int 2g - \limsup \int |f - f_n|$.
+3. **Step 3 — Conclude.** Since $\int 2g < \infty$ (because $\int g < \infty$), we can subtract $\int 2g$ from both sides: $0 \leq -\limsup \int|f - f_n|$, i.e., $\limsup \int|f - f_n| \leq 0$. Since $\int|f - f_n| \geq 0$, we get $\lim \int|f - f_n| = 0$.
+4. **Step 4 — Integral convergence.** $|\int f - \int f_n| = |\int(f - f_n)| \leq \int|f - f_n| \to 0$ (by linearity and monotonicity of the integral). So $\int f = \lim \int f_n$.
+
+$\square$
+
+</details>
+
 ## Key Results
 
 ### definition: Lebesgue integral (non-negative functions)
@@ -165,9 +230,7 @@ The proof applies Fatou's Lemma to $g + f_n \geq 0$ and to $g - f_n \geq 0$, obt
 **Number:** Theorem 14
 **Plain English:** If a sequence of non-negative measurable functions increases pointwise, then the integral of the limit equals the limit of the integrals. You can swap $\lim$ and $\int$ when the sequence is monotone increasing.
 **Formal:** Let $f_1, f_2, \ldots$ be measurable on $(\Omega, \mathcal{F}, \mathbb{P})$ with $0 \leq f_1 \leq f_2 \leq \ldots$ pointwise. Then $\lim_{n\to\infty} \int_\Omega f_n \, \mathrm{d}\mathbb{P} = \int_\Omega \lim_{n\to\infty} f_n \, \mathrm{d}\mathbb{P}$.
-**Proof sketch:**
-1. $\leq$: Since $f_n \leq f$ pointwise, $\int f_n \leq \int f$ by monotonicity, so $\lim \int f_n \leq \int f$.
-2. $\geq$: Fix simple $g \leq f$ and $0 < \gamma < 1$. Define $A_n = \{f_n \geq \gamma g\}$. These are nested with $\bigcup A_n = \Omega$. Use $\int f_n \geq \gamma \int g \mathbf{1}_{A_n} \to \gamma \int g$ (by Exercise 9). Take $\gamma \to 1$ and sup over $g$.
+**Proof:** $f = \lim f_n$ is measurable (Theorem 5). ($\leq$): $f_n \leq f$ gives $\int f_n \leq \int f$, so $\lim \int f_n \leq \int f$. ($\geq$): Fix simple $g \leq f$ and $0 < \gamma < 1$. Let $A_n = \{f_n \geq \gamma g\}$; these are nested with $\bigcup A_n = \Omega$ (if $g(\omega) > 0$ then $f_n(\omega) \to f(\omega) \geq g(\omega) > \gamma g(\omega)$). By monotonicity $\int f_n \geq \gamma \int g \mathbf{1}_{A_n}$, and by Exercise 9 (continuity of measure for integrals) $\lim \int g \mathbf{1}_{A_n} = \int g$. So $\lim \int f_n \geq \gamma \int g$. Take $\gamma \to 1$ and sup over $g$: $\lim \int f_n \geq \int f$. $\square$
 **Key technique:** Continuity of measure + supremum definition
 **Load-bearing:** yes
 
@@ -175,10 +238,7 @@ The proof applies Fatou's Lemma to $g + f_n \geq 0$ and to $g - f_n \geq 0$, obt
 **Number:** Theorem 15
 **Plain English:** For any sequence of non-negative measurable functions, the integral of the $\liminf$ is at most the $\liminf$ of the integrals. "Fatou: the integral of the limit is at most the limit of the integrals" (for non-negative functions, one-sided).
 **Formal:** Let $f_1, f_2, \ldots$ be non-negative measurable functions. Then $\int_\Omega \liminf_{n\to\infty} f_n \, \mathrm{d}\mathbb{P} \leq \liminf_{n\to\infty} \int_\Omega f_n \, \mathrm{d}\mathbb{P}$.
-**Proof sketch:**
-1. Define $g_n = \inf_{k \geq n} f_k$; these are monotone increasing with $\lim g_n = \liminf f_n$.
-2. Apply MCT to $(g_n)$: $\int \liminf f_n = \lim \int g_n$.
-3. Since $g_n \leq f_n$, we have $\int g_n \leq \int f_n$, so $\lim \int g_n \leq \liminf \int f_n$.
+**Proof:** Define $g_n = \inf_{k \geq n} f_k$; these are non-negative, measurable, and monotone increasing with $\lim g_n = \liminf f_n$. By MCT: $\int \liminf f_n = \lim \int g_n$. Since $g_n \leq f_n$: $\int g_n \leq \int f_n$. Therefore $\lim \int g_n \leq \liminf \int f_n$. $\square$
 **Key technique:** Reduce to MCT via $g_n = \inf_{k \geq n} f_k$
 **Load-bearing:** yes
 
@@ -186,10 +246,7 @@ The proof applies Fatou's Lemma to $g + f_n \geq 0$ and to $g - f_n \geq 0$, obt
 **Number:** Theorem 17
 **Plain English:** If a sequence of measurable functions converges pointwise and is uniformly bounded by an integrable function, then the limit of the integrals equals the integral of the limit.
 **Formal:** Let $f_n \to f$ pointwise, with $|f_n| \leq g$ for all $n$ and $\int g \, \mathrm{d}\mathbb{P} < \infty$. Then $\int f \, \mathrm{d}\mathbb{P} = \lim \int f_n \, \mathrm{d}\mathbb{P}$ and $\lim \int |f - f_n| \, \mathrm{d}\mathbb{P} = 0$.
-**Proof sketch:**
-1. Apply Fatou to $g + f_n \geq 0$: $\int(g + f) \leq \liminf \int(g + f_n)$, giving $\int f \leq \liminf \int f_n$.
-2. Apply Fatou to $g - f_n \geq 0$: $\int(g - f) \leq \liminf \int(g - f_n)$, giving $\int f \geq \limsup \int f_n$.
-3. Therefore $\limsup \int f_n \leq \int f \leq \liminf \int f_n$, so the limit exists and equals $\int f$.
+**Proof:** Since $|f - f_n| \leq |f| + |f_n| \leq 2g$ and $f_n \to f$ pointwise, we have $\limsup|f-f_n| = 0$. Apply Fatou to $2g - |f - f_n| \geq 0$: $\int 2g \leq \liminf \int(2g - |f-f_n|) = \int 2g - \limsup \int|f-f_n|$. Since $\int 2g < \infty$, subtract to get $\limsup \int|f-f_n| \leq 0$, so $\lim \int|f-f_n| = 0$. Finally, $|\int f - \int f_n| \leq \int|f-f_n| \to 0$, giving $\int f = \lim \int f_n$. $\square$
 **Key technique:** Two applications of Fatou's Lemma
 **Load-bearing:** yes
 

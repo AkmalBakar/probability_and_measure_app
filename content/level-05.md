@@ -9,19 +9,26 @@ prerequisites: [4]
 
 ## Reading
 
-This is the climax of Notes 1 — the payoff for all the groundwork on algebras, $\sigma$-algebras, and countable operations. The goal: we have a pre-measure on an algebra (which is easy to define) and we want to extend it to a genuine measure on a $\sigma$-algebra (which is what we actually need). The result that makes this possible is the Carath\'{e}odory Extension Theorem.
+This is the climax of Notes 1 — the payoff for all the groundwork on algebras, $\sigma$-algebras, and countable operations. The goal: we have a pre-measure on an algebra (which is easy to define) and we want to extend it to a genuine measure on a $\sigma$-algebra (which is what we actually need). The result that makes this possible is the Carathéodory Extension Theorem.
 
 ### The problem
 
 Suppose we want to construct the "uniform probability measure" on $[0, 1)$, assigning length $b - a$ to each half-open interval $[a, b)$. The collection of finite unions of half-open intervals forms an algebra $\mathcal{A}$, and the length function is easy to define on $\mathcal{A}$. But we need a measure on a $\sigma$-algebra — we need to assign consistent values to countable unions, intersections, and complements. How do we get from the algebra to the $\sigma$-algebra?
 
-The Carath\'{e}odory Extension Theorem answers: define inner and outer pre-measures, declare a set "measurable" when they agree, and prove this collection forms a $\sigma$-algebra on which the common value is a measure.
+The Carathéodory Extension Theorem answers: define inner and outer pre-measures, declare a set "measurable" when they agree, and prove this collection forms a $\sigma$-algebra on which the common value is a measure.
 
 ### Pre-measures
 
 A **pre-measure** is "almost a measure" but defined on an algebra instead of a $\sigma$-algebra.
 
 **Definition 32.** Let $\mathcal{A}$ be an algebra on $X$, and suppose $\mu_0 : \mathcal{A} \to \mathbb{R}_{\geq 0}^\infty$ satisfies $\mu_0(\emptyset) = 0$ and the **countable pre-additivity** condition: for all pairwise disjoint $A_1, A_2, \ldots \in \mathcal{A}$ with $\bigcup_i A_i \in \mathcal{A}$, we have $\mu_0\big(\bigcup_i A_i\big) = \sum_i \mu_0(A_i)$. Then $\mu_0$ is a pre-measure.
+
+<details>
+<summary>Formal Statement (Definition 32)</summary>
+
+**Definition 32.** Let $\mathcal{A}$ be an algebra on $X$. A function $\mu_0 : \mathcal{A} \to \mathbb{R}_{\geq 0}^\infty$ with $\mu_0(\emptyset) = 0$ is a **pre-measure** if for all pairwise disjoint $A_1, A_2, \ldots \in \mathcal{A}$ with $\bigcup_i A_i \in \mathcal{A}$, we have $\mu_0\big(\bigcup_i A_i\big) = \sum_i \mu_0(A_i)$.
+
+</details>
 
 The key point: we only ask $\mathcal{A}$ to be an algebra (closed under *finite* unions), but we require countable additivity whenever the countable union happens to land back in $\mathcal{A}$. This is a much weaker requirement than being a full measure, because we only need to check it for sets already in $\mathcal{A}$.
 
@@ -39,7 +46,27 @@ $$\mu_{0*}(S) = 1 - \mu_0^*(S^c).$$
 
 The intuition is: the outer pre-measure measures $S$ "from outside" (covering it with algebra sets), while the inner pre-measure measures $S$ "from inside" (by looking at how much space the complement leaves). When these agree, $S$ has a well-defined size.
 
+<details>
+<summary>Formal Statement (Outer and Inner Pre-measures)</summary>
+
+**Outer pre-measure.** For any $S \subseteq X$:
+
+$$\mu_0^*(S) = \inf \Big\{\sum_{i=1}^\infty \mu_0(A_i) : A_1, A_2, \ldots \in \mathcal{A},\, S \subseteq \bigcup_i A_i\Big\}.$$
+
+**Inner pre-measure.** $\mu_{0*}(S) = 1 - \mu_0^*(S^c)$.
+
+</details>
+
 **Important subtlety:** The infimum in the definition of $\mu_0^*$ is genuinely an infimum, not a minimum. Theorem 34 gives a striking example: $\mathbb{Q} \cap [0, 1)$ has $\mu_0^*(\mathbb{Q} \cap [0,1)) = 0$ (we can cover the rationals with intervals of arbitrarily small total length), but there is no countable covering of size exactly 0 (any covering must contain a non-empty interval, which already has positive pre-measure).
+
+<details>
+<summary>Formal Statement and Proof (Theorem 34)</summary>
+
+**Theorem 34.** For each $\varepsilon > 0$, the set $\mathbb{Q} \cap [0,1)$ has a countable covering by half-open intervals of total size at most $\varepsilon$.
+
+**Proof.** For each denominator $b$, there are $n(b) = b$ rationals $\frac{a}{b}$ in $[0,1)$ (namely $\frac{0}{b}, \frac{1}{b}, \ldots, \frac{b-1}{b}$). Choose half-interval length $f(b) = 2^{-b-1}b^{-1}\varepsilon$. For each rational $\frac{a}{b}$, place a half-open interval of length $f(b)$ centred on $\frac{a}{b}$. The total size is $\sum_{b=1}^\infty b \cdot f(b) = \sum_{b=1}^\infty 2^{-b-1}\varepsilon = \frac{\varepsilon}{2} < \varepsilon$. $\square$
+
+</details>
 
 ### The key lemma: $\varepsilon$-good coverings
 
@@ -49,9 +76,22 @@ A countable covering $A, A_1, A_2, \ldots$ of a set $S$ is **$\varepsilon$-good*
 
 The idea is that $A$ roughly covers $S$ and $B$ roughly covers $S^c$, so their overlap $A \cap B$ should be small. The leftover pieces create small "errors" that are controlled by $\varepsilon$.
 
+<details>
+<summary>Formal Statement and Proof (Lemma 35)</summary>
+
+**Lemma 35.** Given $\mu_{0*}(S) = \mu_0^*(S) = p$, if $A, A_1, \ldots$ is an $\varepsilon$-good covering of $S$ with size at most $p + \varepsilon$, and $B, B_1, \ldots$ is an $\varepsilon$-good covering of $S^c$ with size at most $1 - p + \varepsilon$, then $\mu_0(A) \in [p - \varepsilon, p + \varepsilon]$, $\mu_0(B) \in [1 - p - \varepsilon, 1 - p + \varepsilon]$, and $\mu_0(A \cap B) \leq 4\varepsilon$.
+
+**Proof.**
+
+1. **Step 1 — Bound $\mu_0(A)$.** The size of the covering $A, A_1, \ldots$ is $\mu_0(A) + \sum_{i=1}^\infty \mu_0(A_i)$. This is at most $p + \varepsilon$ by assumption. Since $0 \leq \sum \mu_0(A_i) \leq \varepsilon$, we get $\mu_0(A) \in [p - \varepsilon, p + \varepsilon]$.
+2. **Step 2 — Bound $\mu_0(B)$ similarly.** $\mu_0(B) \in [1 - p - \varepsilon, 1 - p + \varepsilon]$.
+3. **Step 3 — Bound $\mu_0(A \cap B)$.** Observe $A \setminus B, B, A_1, B_1, A_2, B_2, \ldots$ is a countable covering of $X$ whose size is $\mu_0(A \setminus B) + \mu_0(B) + \sum \mu_0(A_i) + \sum \mu_0(B_i)$. By countable pre-additivity (there exists a disjoint covering with the same size, by Exercise 15), the size is at least $\mu_0(X) = 1$. So $\mu_0(A \setminus B) + \mu_0(B) \geq 1 - 2\varepsilon$, giving $\mu_0(A \setminus B) \geq 1 - 2\varepsilon - \mu_0(B) \geq p - 3\varepsilon$. Since $A = (A \setminus B) \cup (A \cap B)$ is a disjoint union, $\mu_0(A \cap B) = \mu_0(A) - \mu_0(A \setminus B) \leq (p + \varepsilon) - (p - 3\varepsilon) = 4\varepsilon$. $\square$
+
+</details>
+
 ### Theorem 36: the probability case
 
-**Theorem 36 (Carath\'{e}odory Extension Theorem, probability measures).** Suppose $\mathcal{A}$ is an algebra on $X$ and $\mu_0$ is a pre-measure on $\mathcal{A}$ with $\mu_0(X) = 1$. Then:
+**Theorem 36 (Carathéodory Extension Theorem, probability measures).** Suppose $\mathcal{A}$ is an algebra on $X$ and $\mu_0$ is a pre-measure on $\mathcal{A}$ with $\mu_0(X) = 1$. Then:
 
 $$\mathcal{F} = \{S \subseteq X : \mu_{0*}(S) = \mu_0^*(S)\}$$
 
@@ -64,6 +104,21 @@ The proof has three main parts:
 2. **$\mathcal{F}$ is a $\sigma$-algebra and $\mu$ is countably additive.** Given disjoint $F_1, F_2, \ldots \in \mathcal{F}$, the series $\sum \mu(F_i)$ must converge (since the partial sums are bounded by 1). Use the "main part + leftover" trick: take the first $n$ sets as the main part, and note the remaining sets form a tail with small total measure. Combine coverings using the diagonal enumeration (Theorem 17) and verify the total error stays small.
 
 3. **$\mu$ is unique.** Any other measure $\mu'$ on $\mathcal{F}$ extending $\mu_0$ must satisfy $\mu'(F) \leq \mu_0^*(F)$ (by the union bound applied to any covering) and similarly $\mu'(F^c) \leq \mu_0^*(F^c)$. Since $\mu'(F) + \mu'(F^c) = 1$ and $\mu_0^*(F) + \mu_0^*(F^c) \leq 1$ with equality on $\mathcal{F}$, we get $\mu' = \mu$.
+
+<details>
+<summary>Formal Statement and Proof (Theorem 36)</summary>
+
+**Theorem 36 (Carathéodory Extension Theorem, probability measures).** Suppose $\mathcal{A}$ is an algebra on $X$ and $\mu_0$ is a pre-measure on $\mathcal{A}$ with $\mu_0(X) = 1$. Then $\mathcal{F} = \{S \subseteq X : \mu_{0*}(S) = \mu_0^*(S)\}$ is a $\sigma$-algebra containing $\mathcal{A}$, the restriction $\mu$ of $\mu_{0*}$ to $\mathcal{F}$ is a measure with $\mu|_\mathcal{A} = \mu_0$, and $\mu$ is the unique measure on $\mathcal{F}$ extending $\mu_0$.
+
+**Proof.**
+
+1. **$\mathcal{A} \subseteq \mathcal{F}$:** For $A \in \mathcal{A}$, the covering $A$ (with no leftover) has size $\mu_0(A)$, so $\mu_0^*(A) \leq \mu_0(A)$. Similarly $\mu_0^*(A^c) \leq \mu_0(A^c) = 1 - \mu_0(A)$. By Lemma 33, $\mu_{0*}(A) \leq \mu_0^*(A)$, and $\mu_{0*}(A) = 1 - \mu_0^*(A^c) \geq 1 - (1 - \mu_0(A)) = \mu_0(A)$. So $\mu_0^*(A) = \mu_{0*}(A) = \mu_0(A)$.
+2. **Closure under complements (Exercise 18):** If $\mu_{0*}(S) = \mu_0^*(S)$, then $\mu_{0*}(S^c) = 1 - \mu_0^*(S) = 1 - \mu_{0*}(S) = \mu_0^*(S^c)$.
+3. **Closure under intersection:** Given $F, F' \in \mathcal{F}$ and $\varepsilon > 0$, choose $\varepsilon$-good coverings of $F, F^c, F', F'^c$. Using Lemma 35, construct coverings of $F \cap F'$ and $(F \cap F')^c$ by combining the main sets and leftovers. The overlaps $\mu_0(A \cap A')$ etc. are $O(\varepsilon)$ by Lemma 35. After tracking all error terms, $\mu_0^*(F \cap F') + \mu_0^*((F \cap F')^c) \leq 1 + C\varepsilon$ for a constant $C$. Since $\varepsilon$ is arbitrary, equality holds by Lemma 33.
+4. **Countable additivity:** Given disjoint $F_1, F_2, \ldots \in \mathcal{F}$ with $\sum \mu(F_i)$ convergent, take the first $n$ as the "main part" and the rest as the tail. The tail has small total measure. Combine coverings using diagonal enumeration (Theorem 17) and verify total error stays small.
+5. **Uniqueness:** Any other measure $\mu'$ on $\mathcal{F}$ extending $\mu_0$ satisfies $\mu'(F) \leq \mu_0^*(F)$ (by the union bound applied to any covering) and $\mu'(F^c) \leq \mu_0^*(F^c)$. Since $\mu'(F) + \mu'(F^c) = 1$ and $\mu_0^*(F) + \mu_0^*(F^c) = 1$ on $\mathcal{F}$, we get $\mu' = \mu$. $\square$
+
+</details>
 
 ### Theorem 37: the $\sigma$-finite case
 
@@ -89,6 +144,20 @@ All the abstract machinery pays off here. On $[0, 1)$, let $\mathcal{A}$ be the 
 
 Choosing $F(x) = x$ gives the Lebesgue pre-measure on $[0,1)$. Applying Theorem 36 (with appropriate normalisation) extends it to the Lebesgue measure on $[0,1)$.
 
+<details>
+<summary>Formal Statement and Proof (Theorem 40)</summary>
+
+**Theorem 40.** For any increasing continuous $F : [0,1) \to \mathbb{R}$, the function $\mu_0([a,b)) = F(b) - F(a)$ defines a unique pre-measure on $\mathcal{A}$ (the algebra of finite unions of half-open intervals in $[0,1)$).
+
+**Proof.**
+
+1. **Step 1 — Well-definedness.** Any $A \in \mathcal{A}$ is a finite disjoint union of half-open intervals $[a_1, b_1) \cup \cdots \cup [a_k, b_k)$. Define $\mu_0(A) = \sum_{i=1}^k (F(b_i) - F(a_i))$. This is well-defined (independent of representation) because different representations of the same set must decompose into the same disjoint intervals.
+2. **Step 2 — Finite additivity.** If $A, B \in \mathcal{A}$ are disjoint, their union is also a finite union of disjoint half-open intervals, and $\mu_0$ applied to the union equals the sum (endpoints cancel correctly because $F$ is a function).
+3. **Step 3 — Countable pre-additivity ($\leq$).** If $[a,b) = \bigcup_{i=1}^\infty [a_i, b_i)$ with disjoint $[a_i, b_i) \in \mathcal{A}$, then the partial sums $\sum_{i=1}^n \mu_0([a_i, b_i)) \leq \mu_0([a, b))$ by finite subadditivity (monotonicity). So $\sum_{i=1}^\infty \mu_0([a_i, b_i)) \leq \mu_0([a, b))$.
+4. **Step 4 — Countable pre-additivity ($\geq$, the hard direction).** Fix $\varepsilon > 0$. By continuity of $F$, choose slightly larger closed intervals $[\alpha_i, \beta_i] \supseteq [a_i, b_i)$ with $F(\beta_i) - F(\alpha_i) \leq (F(b_i) - F(a_i)) + \varepsilon 2^{-i}$, and a slightly smaller closed interval $[\alpha, \beta] \subseteq [a, b)$ with $F(\beta) - F(\alpha) \geq F(b) - F(a) - \varepsilon$. Now $[\alpha, \beta] \subseteq [a,b) \subseteq \bigcup [\alpha_i, \beta_i]$ is an open cover of a compact set. By Heine-Borel, a finite subcover suffices: $[\alpha, \beta] \subseteq \bigcup_{i=1}^N [\alpha_i, \beta_i]$. Then $\mu_0([a,b)) \leq F(\beta) - F(\alpha) + \varepsilon \leq \sum_{i=1}^N (F(\beta_i) - F(\alpha_i)) + \varepsilon \leq \sum_{i=1}^\infty \mu_0([a_i, b_i)) + 2\varepsilon$. Since $\varepsilon$ is arbitrary, $\mu_0([a,b)) \leq \sum_{i=1}^\infty \mu_0([a_i, b_i))$. $\square$
+
+</details>
+
 For $\mathbb{R}$: write $\mathbb{R} = \bigcup_{n \in \mathbb{Z}} [n, n+1)$. For any increasing continuous $F : \mathbb{R} \to \mathbb{R}$, apply Theorem 40 on each $[n, n+1)$, then Theorem 36 to get a measure $\mu_n$ on each piece, and finally Theorem 38 to glue them into a measure on $\mathbb{R}$. With $F(x) = x$, we get Lebesgue measure on $\mathbb{R}$. With $F$ equal to the Gaussian CDF, we get the Gaussian measure. Any continuous measure on $[0,1)$ (one that assigns measure 0 to every singleton) arises this way.
 
 ## Key Results
@@ -109,7 +178,7 @@ For $\mathbb{R}$: write $\mathbb{R} = \bigcup_{n \in \mathbb{Z}} [n, n+1)$. For 
 **Number:** Lemma 33
 **Plain English:** You can't measure more from inside than from outside — the inner pre-measure never exceeds the outer.
 **Formal:** Given an algebra $\mathcal{A}$ on $X$ and pre-measure $\mu_0$ with $\mu_0(X) = 1$, for any $S \subseteq X$ we have $\mu_{0*}(S) \leq \mu_0^*(S)$.
-**Proof sketch:** Suppose $\mu_{0*}(S) = \mu_0^*(S) + \varepsilon$. Take coverings of $S$ and $S^c$ with sizes close to $\mu_0^*(S)$ and $\mu_0^*(S^c)$. Combine them into a covering of $X$ with total size at most $1 - \frac{1}{2}\varepsilon$. Apply Exercise 15 to get a disjoint covering, then use countable pre-additivity to get $\mu_0(X) \leq 1 - \frac{1}{2}\varepsilon < 1$, contradiction.
+**Proof:** Suppose for contradiction $\mu_{0*}(S) = \mu_0^*(S) + \varepsilon$ for some $\varepsilon > 0$. By definition, there is a countable covering $A_1, A_2, \ldots$ of $S$ with size at most $\mu_0^*(S) + \frac{1}{4}\varepsilon$, and another $B_1, B_2, \ldots$ of $S^c$ with size at most $\mu_0^*(S^c) + \frac{1}{4}\varepsilon = 1 - \mu_{0*}(S) + \frac{1}{4}\varepsilon = 1 - \mu_0^*(S) - \varepsilon + \frac{1}{4}\varepsilon$. Then $A_1, B_1, A_2, B_2, \ldots$ is a countable covering of $X$ with size at most $\mu_0^*(S) + \frac{1}{4}\varepsilon + 1 - \mu_0^*(S) - \varepsilon + \frac{1}{4}\varepsilon = 1 - \frac{1}{2}\varepsilon$. By Exercise 15, there exists a disjoint countable covering $C_1, C_2, \ldots$ of $X$ with the same union and size at most $1 - \frac{1}{2}\varepsilon$. By countable pre-additivity, $\mu_0(X) = \sum \mu_0(C_i) \leq 1 - \frac{1}{2}\varepsilon < 1$, contradicting $\mu_0(X) = 1$. $\square$
 **Key technique:** Covering argument with summable errors
 **Load-bearing:** yes
 
@@ -117,7 +186,7 @@ For $\mathbb{R}$: write $\mathbb{R} = \bigcup_{n \in \mathbb{Z}} [n, n+1)$. For 
 **Number:** Theorem 34
 **Plain English:** The rationals in $[0,1)$ can be covered by half-open intervals whose total length is arbitrarily small, even though the rationals are dense.
 **Formal:** For each $\varepsilon > 0$, the set $\mathbb{Q} \cap [0,1)$ has a countable covering with half-intervals of size at most $\varepsilon$.
-**Proof sketch:** Enumerate rationals $\frac{a}{b}$ with denominator $b$; there are $b$ of them. Assign each denominator $b$ an interval length $f(b) = 2^{-b-1}b^{-1}\varepsilon$. Then $\sum_{b=1}^\infty b \cdot f(b) = \frac{\varepsilon}{2} < \varepsilon$.
+**Proof:** For each denominator $b \in \mathbb{N}$, there are $n(b) = b$ rationals $\frac{a}{b} \in [0,1)$ (namely $\frac{0}{b}, \frac{1}{b}, \ldots, \frac{b-1}{b}$). Choose $f(b) = 2^{-b-1}b^{-1}\varepsilon$. For each rational $\frac{a}{b}$, place a half-open interval $A_{a,b}$ of length $f(b)$ centred on $\frac{a}{b}$. The collection of all $A_{a,b}$ covers $\mathbb{Q} \cap [0,1)$, and the total size is $\sum_{b=1}^\infty b \cdot f(b) = \sum_{b=1}^\infty 2^{-b-1}\varepsilon = \frac{\varepsilon}{2} < \varepsilon$. $\square$
 **Key technique:** Geometric series to make total length summable
 **Load-bearing:** yes
 
@@ -125,27 +194,31 @@ For $\mathbb{R}$: write $\mathbb{R} = \bigcup_{n \in \mathbb{Z}} [n, n+1)$. For 
 **Number:** Lemma 35
 **Plain English:** If you have near-optimal coverings of both $S$ and $S^c$, then the "main sets" from each covering have small overlap and their pre-measures are close to $\mu_0^*(S)$ and $1 - \mu_0^*(S)$ respectively.
 **Formal:** Given $\mu_{0*}(S) = \mu_0^*(S) = p$, if $A, A_1, \ldots$ is an $\varepsilon$-good covering of $S$ with size at most $p + \varepsilon$, and $B, B_1, \ldots$ is an $\varepsilon$-good covering of $S^c$ with size at most $1 - p + \varepsilon$, then $\mu_0(A) \in [p - \varepsilon, p + \varepsilon]$, $1 - \mu_0(B) \in [p - \varepsilon, p + \varepsilon]$, and $\mu_0(A \cap B) \leq 4\varepsilon$.
+**Proof:**
+1. **Step 1 — Bound $\mu_0(A)$.** The size of the covering $A, A_1, \ldots$ is $\mu_0(A) + \sum_{i=1}^\infty \mu_0(A_i)$. This is at most $p + \varepsilon$ by assumption. Since $0 \leq \sum \mu_0(A_i) \leq \varepsilon$, we get $\mu_0(A) \in [p - \varepsilon, p + \varepsilon]$.
+2. **Step 2 — Bound $\mu_0(B)$ similarly.** $\mu_0(B) \in [1 - p - \varepsilon, 1 - p + \varepsilon]$.
+3. **Step 3 — Bound $\mu_0(A \cap B)$.** Observe $A \setminus B, B, A_1, B_1, A_2, B_2, \ldots$ is a countable covering of $X$ whose size is $\mu_0(A \setminus B) + \mu_0(B) + \sum \mu_0(A_i) + \sum \mu_0(B_i)$. By countable pre-additivity (there exists a disjoint covering with the same size, by Exercise 15), the size is at least $\mu_0(X) = 1$. So $\mu_0(A \setminus B) + \mu_0(B) \geq 1 - 2\varepsilon$, giving $\mu_0(A \setminus B) \geq 1 - 2\varepsilon - \mu_0(B) \geq p - 3\varepsilon$. Since $A = (A \setminus B) \cup (A \cap B)$ is a disjoint union, $\mu_0(A \cap B) = \mu_0(A) - \mu_0(A \setminus B) \leq (p + \varepsilon) - (p - 3\varepsilon) = 4\varepsilon$. $\square$
 **Key technique:** Bounding errors from leftover pieces
 **Load-bearing:** yes
 
-### theorem: Carath\'{e}odory Extension Theorem (probability)
+### theorem: Carathéodory Extension Theorem (probability)
 **Number:** Theorem 36
 **Plain English:** Starting from a pre-measure on an algebra with total mass 1, the sets where inner and outer pre-measures agree form a $\sigma$-algebra, and the common value is the unique extending measure.
 **Formal:** If $\mathcal{A}$ is an algebra on $X$ and $\mu_0$ is a pre-measure with $\mu_0(X) = 1$, then $\mathcal{F} = \{S \subseteq X : \mu_{0*}(S) = \mu_0^*(S)\}$ is a $\sigma$-algebra containing $\mathcal{A}$, the restriction $\mu$ of $\mu_{0*}$ to $\mathcal{F}$ is a measure with $\mu|_\mathcal{A} = \mu_0$, and $\mu$ is the unique measure on $\mathcal{F}$ extending $\mu_0$.
-**Proof sketch:**
-1. Show $\mathcal{A} \subseteq \mathcal{F}$ (any $A \in \mathcal{A}$ covers itself, giving $\mu_0^*(A) = \mu_0(A)$)
-2. Prove $\mathcal{F}$ closed under complements (Exercise 18) and intersections (using Lemma 35 to control errors from overlapping coverings)
-3. Prove $\mu$ is finitely additive on $\mathcal{F}$ (Exercise 19, same covering technique)
-4. Prove $\mathcal{F}$ closed under countable unions and $\mu$ countably additive (diagonal enumeration of coverings, summable errors)
-5. Prove uniqueness (any extension $\mu'$ satisfies $\mu'(F) \leq \mu_0^*(F)$ by union bound, forcing $\mu' = \mu$)
+**Proof:**
+1. **$\mathcal{A} \subseteq \mathcal{F}$:** For $A \in \mathcal{A}$, the covering $A$ (with no leftover) has size $\mu_0(A)$, so $\mu_0^*(A) \leq \mu_0(A)$. Similarly $\mu_0^*(A^c) \leq \mu_0(A^c) = 1 - \mu_0(A)$. By Lemma 33, $\mu_{0*}(A) \leq \mu_0^*(A)$, and $\mu_{0*}(A) = 1 - \mu_0^*(A^c) \geq 1 - (1 - \mu_0(A)) = \mu_0(A)$. So $\mu_0^*(A) = \mu_{0*}(A) = \mu_0(A)$.
+2. **Closure under complements (Exercise 18):** If $\mu_{0*}(S) = \mu_0^*(S)$, then $\mu_{0*}(S^c) = 1 - \mu_0^*(S) = 1 - \mu_{0*}(S) = \mu_0^*(S^c)$.
+3. **Closure under intersection:** Given $F, F' \in \mathcal{F}$ and $\varepsilon > 0$, choose $\varepsilon$-good coverings of $F, F^c, F', F'^c$. Using Lemma 35, construct coverings of $F \cap F'$ and $(F \cap F')^c$ by combining the main sets and leftovers. The overlaps $\mu_0(A \cap A')$ etc. are $O(\varepsilon)$ by Lemma 35. After tracking all error terms, $\mu_0^*(F \cap F') + \mu_0^*((F \cap F')^c) \leq 1 + C\varepsilon$ for a constant $C$. Since $\varepsilon$ is arbitrary, equality holds by Lemma 33.
+4. **Countable additivity:** Given disjoint $F_1, F_2, \ldots \in \mathcal{F}$ with $\sum \mu(F_i)$ convergent, take the first $n$ as the "main part" and the rest as the tail. The tail has small total measure. Combine coverings using diagonal enumeration (Theorem 17) and verify total error stays small.
+5. **Uniqueness:** Any other measure $\mu'$ on $\mathcal{F}$ extending $\mu_0$ satisfies $\mu'(F) \leq \mu_0^*(F)$ (by the union bound applied to any covering) and $\mu'(F^c) \leq \mu_0^*(F^c)$. Since $\mu'(F) + \mu'(F^c) = 1$ and $\mu_0^*(F) + \mu_0^*(F^c) = 1$ on $\mathcal{F}$, we get $\mu' = \mu$. $\square$
 **Key technique:** $\varepsilon$-good coverings with summable errors; letting $\varepsilon \to 0$
 **Load-bearing:** yes
 
-### theorem: Carath\'{e}odory Extension Theorem ($\sigma$-finite)
+### theorem: Carathéodory Extension Theorem ($\sigma$-finite)
 **Number:** Theorem 37
 **Plain English:** The extension theorem also works for $\sigma$-finite pre-measures, and the extending measure is still unique.
 **Formal:** If $\mathcal{A}$ is an algebra on $X$ and $\mu_0$ is a $\sigma$-finite pre-measure on $\mathcal{A}$, there is a $\sigma$-algebra $\mathcal{F} \supseteq \mathcal{A}$ and a unique measure $\mu$ on $\mathcal{F}$ with $\mu|_\mathcal{A} = \mu_0$.
-**Proof sketch:** Write $X = \bigcup Y_i$ as a disjoint union of finite-measure pieces. Rescale each to a probability pre-measure, apply Theorem 36 to get $\mathcal{F}_i$ and $\mu_i$, then glue via Theorem 38.
+**Proof:** Write $X = \bigcup_{i=1}^\infty Y_i$ as a disjoint union with $\mu_0(Y_i) < \infty$ (possible by $\sigma$-finiteness). Define $\mu_0^{(i)}(A) = \mu_0(A \cap Y_i) / \mu_0(Y_i)$ on $\mathcal{A}_i = \{A \cap Y_i : A \in \mathcal{A}\}$. Each $\mu_0^{(i)}$ is a probability pre-measure on the algebra $\mathcal{A}_i$ on $Y_i$. By Theorem 36, extend to $\mathcal{F}_i$ and $\mu_i$. Rescale back: $\hat{\mu}_i = \mu_0(Y_i) \cdot \mu_i$. Apply Theorem 38 to glue into a measure $\mu$ on $\mathcal{F}$. Uniqueness: if $\mu'$ also extends $\mu_0$, then $\mu'|_{Y_i}$ is an extension of $\mu_0^{(i)}$ (rescaled) on $\mathcal{F}_i$, and Theorem 36 gives uniqueness on each piece, so $\mu' = \mu$. $\square$
 **Key technique:** Reduction to probability case by rescaling
 **Load-bearing:** yes
 
@@ -156,7 +229,7 @@ For $\mathbb{R}$: write $\mathbb{R} = \bigcup_{n \in \mathbb{Z}} [n, n+1)$. For 
 **Key technique:** Define $\mu(F) = \sum_i \mu_i(F \cap Y_i)$
 **Load-bearing:** yes
 
-### theorem: Carath\'{e}odory Extension Theorem (general)
+### theorem: Carathéodory Extension Theorem (general)
 **Number:** Theorem 39
 **Plain English:** Even without $\sigma$-finiteness, a pre-measure extends to a measure — but the extension may not be unique.
 **Formal:** For any algebra $\mathcal{A}$ on $X$ and pre-measure $\mu_0$ on $\mathcal{A}$, there exists a $\sigma$-algebra $\mathcal{F} \supseteq \mathcal{A}$ and a measure $\mu$ on $\mathcal{F}$ with $\mu|_\mathcal{A} = \mu_0$.
@@ -167,7 +240,11 @@ For $\mathbb{R}$: write $\mathbb{R} = \bigcup_{n \in \mathbb{Z}} [n, n+1)$. For 
 **Number:** Theorem 40
 **Plain English:** Any increasing continuous function on $[0,1)$ gives rise to a pre-measure on the algebra of finite unions of half-open intervals, which then extends to a full measure (e.g. Lebesgue measure).
 **Formal:** For any increasing continuous $F : [0,1) \to \mathbb{R}$, there is a unique pre-measure $\mu_0$ on $\mathcal{A}$ (finite unions of half-open intervals in $[0,1)$) with $\mu_0([a,b)) = F(b) - F(a)$ for all $0 \leq a < b \leq 1$.
-**Proof sketch:** Finite additivity follows from cancellation of shared endpoints. Countable pre-additivity: the $\leq$ direction uses monotonicity of partial sums; the $\geq$ direction uses Heine-Borel to reduce to a finite subcover.
+**Proof:**
+1. **Step 1 — Well-definedness.** Any $A \in \mathcal{A}$ is a finite disjoint union of half-open intervals $[a_1, b_1) \cup \cdots \cup [a_k, b_k)$. Define $\mu_0(A) = \sum_{i=1}^k (F(b_i) - F(a_i))$. This is well-defined (independent of representation) because different representations of the same set must decompose into the same disjoint intervals.
+2. **Step 2 — Finite additivity.** If $A, B \in \mathcal{A}$ are disjoint, their union is also a finite union of disjoint half-open intervals, and $\mu_0$ applied to the union equals the sum (endpoints cancel correctly because $F$ is a function).
+3. **Step 3 — Countable pre-additivity ($\leq$).** If $[a,b) = \bigcup_{i=1}^\infty [a_i, b_i)$ with disjoint $[a_i, b_i) \in \mathcal{A}$, then the partial sums $\sum_{i=1}^n \mu_0([a_i, b_i)) \leq \mu_0([a, b))$ by finite subadditivity (monotonicity). So $\sum_{i=1}^\infty \mu_0([a_i, b_i)) \leq \mu_0([a, b))$.
+4. **Step 4 — Countable pre-additivity ($\geq$, the hard direction).** Fix $\varepsilon > 0$. By continuity of $F$, choose slightly larger closed intervals $[\alpha_i, \beta_i] \supseteq [a_i, b_i)$ with $F(\beta_i) - F(\alpha_i) \leq (F(b_i) - F(a_i)) + \varepsilon 2^{-i}$, and a slightly smaller closed interval $[\alpha, \beta] \subseteq [a, b)$ with $F(\beta) - F(\alpha) \geq F(b) - F(a) - \varepsilon$. Now $[\alpha, \beta] \subseteq [a,b) \subseteq \bigcup [\alpha_i, \beta_i]$ is an open cover of a compact set. By Heine-Borel, a finite subcover suffices: $[\alpha, \beta] \subseteq \bigcup_{i=1}^N [\alpha_i, \beta_i]$. Then $\mu_0([a,b)) \leq F(\beta) - F(\alpha) + \varepsilon \leq \sum_{i=1}^N (F(\beta_i) - F(\alpha_i)) + \varepsilon \leq \sum_{i=1}^\infty \mu_0([a_i, b_i)) + 2\varepsilon$. Since $\varepsilon$ is arbitrary, $\mu_0([a,b)) \leq \sum_{i=1}^\infty \mu_0([a_i, b_i))$. $\square$
 **Key technique:** Compactness (Heine-Borel) for the hard inequality
 **Load-bearing:** yes
 
